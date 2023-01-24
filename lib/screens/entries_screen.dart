@@ -7,7 +7,9 @@ class EntriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Monthly Expanse'),
+        title: const Text(
+          'Monthly Expanse',
+        ),
       ),
       body: Center(
         child: Text('Track all monthly expanses here!'),
