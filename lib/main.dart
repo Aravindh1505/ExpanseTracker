@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import '../screens/home_screen.dart';
+import '../utils/route_names.dart';
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -10,16 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expanse Tracker'),
-        ),
-        body: const Center(
-          child: Text(
-            'Track all your expanses here',
-          ),
-        ),
-      ),
+      routes: {
+        RouteNames.HOME: (ctx) => const HomeScreen(),
+      },
     );
   }
 }
