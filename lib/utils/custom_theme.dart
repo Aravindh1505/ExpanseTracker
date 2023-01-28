@@ -26,21 +26,17 @@ class CustomTheme {
   }
 
   static TextTheme buildTextTheme() {
-    return TextTheme(
-      titleMedium: const TextStyle(
+    return const TextTheme(
+      titleMedium: TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.w900,
       ),
-      bodySmall: const TextStyle(
+      bodySmall: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.w700,
       ),
-      labelSmall: const TextStyle(
+      labelSmall: TextStyle(
         fontSize: 14.0,
-        fontWeight: FontWeight.w500,
-      ),
-      button: const TextStyle(
-        fontSize: 16.0,
         fontWeight: FontWeight.w500,
       ),
     );
