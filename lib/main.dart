@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home_screen.dart';
@@ -7,8 +8,13 @@ import '../screens/categories_screen.dart';
 import '../screens/payment_mode_screen.dart';
 import '../utils/route_names.dart';
 import '../utils/custom_theme.dart';
+import '../screens/firebase_demo.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -18,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: CustomTheme.lightTheme,
       routes: {
-        RouteNames.HOME: (_) => const HomeScreen(),
+        RouteNames.HOME: (_) => const FirebaseDemoScreen(),
         RouteNames.ENTRIES_SCREEN: (_) => const EntriesScreen(),
         RouteNames.ENTRIES_FORM_SCREEN: (_) => const EntriesFormScreen(),
         RouteNames.CATEGORIES_SCREEN: (_) => const CategoriesScreen(),
