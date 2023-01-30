@@ -9,6 +9,7 @@ import '../screens/payment_mode_screen.dart';
 import '../utils/route_names.dart';
 import '../utils/custom_theme.dart';
 import '../screens/firebase_demo.dart';
+import '../screens/firebase_phone_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: CustomTheme.lightTheme,
       routes: {
-        RouteNames.HOME: (_) => const FirebaseDemoScreen(),
+        RouteNames.HOME: (_) => FirebasePhoneAuthScreen('9791779068'),
         RouteNames.ENTRIES_SCREEN: (_) => const EntriesScreen(),
         RouteNames.ENTRIES_FORM_SCREEN: (_) => const EntriesFormScreen(),
         RouteNames.CATEGORIES_SCREEN: (_) => const CategoriesScreen(),

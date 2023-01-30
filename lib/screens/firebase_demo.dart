@@ -38,8 +38,8 @@ class FirebaseDemoScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           child: const Text('Submit'),
-          // onPressed: () => addMessageToGuestBook('Testing purpose'),
-          onPressed: () => getMessages(),
+          onPressed: () => addMessageToGuestBook('Testing purpose'),
+          // onPressed: () => getMessages(),
         ),
       ),
     );
