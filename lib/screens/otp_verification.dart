@@ -28,7 +28,27 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
     ),
   );
 
-  void _verifyOTP() {
+  Future<void> _verifyOTP() async {
+    try {
+      String otp = _pinPutController.text.toString();
+
+      if (otp.length == 6) {
+        await FirebaseAuth.instance
+            .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode!, smsCode: otp))
+            .then((value) async {
+          if (value.user != null) {
+            print(value.user?.uid);
+            navigateToHome();
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
+
+  void navigateToHome() {
     Navigator.pushAndRemoveUntil<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
@@ -42,6 +62,11 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
   Widget build(BuildContext context) {
     String mobileNumber = ModalRoute.of(context)?.settings.arguments as String;
     widget.phone = mobileNumber;
+
+    /*if (!_isVerifyPhoneTriggered) {
+      _verifyPhone();
+      _isVerifyPhoneTriggered = true;
+    }*/
 
     return Scaffold(
       key: _scaffoldkey,
@@ -69,19 +94,7 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
               controller: _pinPutController,
               pinAnimationType: PinAnimationType.fade,
               onSubmitted: (pin) async {
-                try {
-                  await FirebaseAuth.instance
-                      .signInWithCredential(
-                          PhoneAuthProvider.credential(verificationId: _verificationCode!, smsCode: pin))
-                      .then((value) async {
-                    if (value.user != null) {
-                      print(value.user?.uid);
-                    }
-                  });
-                } catch (e) {
-                  print(e);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                }
+                _verifyOTP();
               },
             ),
           ),
@@ -99,9 +112,12 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
         phoneNumber: '+91 ${widget.phone}',
         verificationCompleted: (PhoneAuthCredential credential) async {
           print('verificationCompleted');
-          await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
-            if (value.user != null) {}
-          });
+          /*await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
+            if (value.user != null) {
+              print('verificationCompleted signInWithCredential');
+              _verifyOTP();
+            }
+          });*/
         },
         verificationFailed: (FirebaseAuthException e) {
           print(e.message);
@@ -118,13 +134,20 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
             _verificationCode = verificationID;
           });
         },
-        timeout: Duration(seconds: 120));
+        timeout: const Duration(seconds: 120));
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //_verifyPhone();
+
+    final widgetsBinding = WidgetsBinding.instance;
+    widgetsBinding.addPostFrameCallback((callback) {
+      String? mobileNumber = ModalRoute.of(context)?.settings.arguments as String?;
+      if (mobileNumber != null) {
+        widget.phone = mobileNumber;
+        _verifyPhone();
+      }
+    });
   }
 }
