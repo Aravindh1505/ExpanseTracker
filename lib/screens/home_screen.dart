@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utils/route_names.dart';
+import '../utils/constants.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Expanse Tracker'),
+        title: const Text(Constants.TITLE_HOME),
       ),
       body: Center(
         child: Text('Home screen contents available here!'),
@@ -20,7 +21,6 @@ class HomeScreen extends StatelessWidget {
         },
         icon: const Icon(Icons.add),
         label: const Text('Add Book'),
-
       ),
     );
   }
