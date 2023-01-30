@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-        useMaterial3: false,
+        useMaterial3: true,
         primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white,
         fontFamily: GoogleFonts.raleway().fontFamily,
