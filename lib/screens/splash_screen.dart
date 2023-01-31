@@ -16,13 +16,13 @@ class SplashScreen extends StatelessWidget {
         builder: (BuildContext context) =>
             FirebaseAuth.instance.currentUser == null ? const LoginScreen() : const HomeScreen(),
       ),
-      (route) => false, //if you want to disable back feature set to false
+      (route) => false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 5), () => {navigate(context)});
+    Timer(const Duration(seconds: 2), () => {navigate(context)});
 
     return Scaffold(
       body: Center(

@@ -54,7 +54,7 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => HomeScreen(),
       ),
-      (route) => false, //if you want to disable back feature set to false
+      (route) => false,
     );
   }
 
@@ -62,11 +62,6 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
   Widget build(BuildContext context) {
     String mobileNumber = ModalRoute.of(context)?.settings.arguments as String;
     widget.phone = mobileNumber;
-
-    /*if (!_isVerifyPhoneTriggered) {
-      _verifyPhone();
-      _isVerifyPhoneTriggered = true;
-    }*/
 
     return Scaffold(
       key: _scaffoldkey,
