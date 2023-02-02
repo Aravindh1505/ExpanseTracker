@@ -10,6 +10,7 @@ import '../screens/payment_mode_screen.dart';
 import '../utils/custom_theme.dart';
 import '../utils/route_names.dart';
 import '../screens/splash_screen.dart';
+import '../screens/add_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: CustomTheme.lightTheme,
       routes: {
-        RouteNames.HOME: (_) => const SplashScreen(),
+        RouteNames.HOME: (_) => AddDataScreen(),
         RouteNames.LOGIN_SCREEN: (_) => const LoginScreen(),
         RouteNames.OTP_VERIFICATION_SCREEN: (_) => OtpVerificationScreen(),
         RouteNames.ENTRIES_SCREEN: (_) => const EntriesScreen(),
