@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1031747110255-hfta4sq6pvv4i8v651ugsng25qn7vohe.apps.googleusercontent.com</string>
+	<string>819368180972-j6on3s7gt6g3ptg8e59gn1ebkgfip5j9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1031747110255-hfta4sq6pvv4i8v651ugsng25qn7vohe</string>
+	<string>com.googleusercontent.apps.819368180972-j6on3s7gt6g3ptg8e59gn1ebkgfip5j9</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDmGyINu991OjsRS-6IlfIMdIwkIyxtT6o</string>
+	<string>AIzaSyD2czQBCZ72qvD8ITLwQh9HnYbNC8lkorQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1031747110255</string>
+	<string>819368180972</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.etracker.expanseTracker</string>
 	<key>PROJECT_ID</key>
-	<string>expanse-tracker-9cf44</string>
+	<string>expansetracker-f540e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>expanse-tracker-9cf44.appspot.com</string>
+	<string>expansetracker-f540e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1031747110255:ios:80805a8687049256e9d49a</string>
-	<key>DATABASE_URL</key>
-	<string>https://expanse-tracker-9cf44-default-rtdb.firebaseio.com</string>
+	<string>1:819368180972:ios:a51fecae3e6ea31c39b9c9</string>
 </dict>
 </plist>

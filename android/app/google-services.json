@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "1031747110255",
-    "firebase_url": "https://expanse-tracker-9cf44-default-rtdb.firebaseio.com",
-    "project_id": "expanse-tracker-9cf44",
-    "storage_bucket": "expanse-tracker-9cf44.appspot.com"
+    "project_number": "819368180972",
+    "project_id": "expansetracker-f540e",
+    "storage_bucket": "expansetracker-f540e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1031747110255:android:8587bf574239bc6be9d49a",
+        "mobilesdk_app_id": "1:819368180972:android:c0d11f26ac6f188539b9c9",
         "android_client_info": {
           "package_name": "com.etracker.expanse_tracker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1031747110255-mgosk2q0k6dh6jf6ctpvdvs3vggodsld.apps.googleusercontent.com",
+          "client_id": "819368180972-heug278b4ev5qia3g93u3646cd6m25rb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBR9kQsNN4uIUn9tItZWuWAdCr8IbHq7hI"
+          "current_key": "AIzaSyA32ji_FJlldj3qZXBsWd9OeMqNazGXpnM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1031747110255-mgosk2q0k6dh6jf6ctpvdvs3vggodsld.apps.googleusercontent.com",
+              "client_id": "819368180972-heug278b4ev5qia3g93u3646cd6m25rb.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1031747110255-hfta4sq6pvv4i8v651ugsng25qn7vohe.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.etracker.expanseTracker"
-              }
             }
           ]
         }
