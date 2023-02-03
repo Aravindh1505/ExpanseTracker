@@ -12,10 +12,12 @@ Add daily expanse entries, create ledgers and know your account balance. Expanse
 
 # Firebase Firestore Database:
 https://www.youtube.com/watch?v=wUSkeTaBonA
+
 https://firebase.google.com/codelabs/firebase-get-to-know-flutter#0
 
 # Firebase Phone Auth:
 https://www.youtube.com/watch?v=PEUUYOQ2Ixo&t=143s
+
 https://github.com/Amanullahgit/flutter_phone_authentication
 
 # Resources
