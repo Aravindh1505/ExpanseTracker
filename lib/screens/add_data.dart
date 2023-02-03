@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,22 +9,41 @@ class AddDataScreen extends StatelessWidget {
   AddDataScreen({Key? key}) : super(key: key);
 
   TextEditingController textEditingController = TextEditingController();
+  TextEditingController sequenceEditingController = TextEditingController();
 
   void add() {
-    Utils.logger('add triggered...');
+    //Utils.logger('add triggered...');
 
-    String message = textEditingController.text.toString();
+    String name = textEditingController.text.toString();
+    String sequence = sequenceEditingController.text.toString();
 
-    //addMessage(message);
+    Utils.logger('$name - $sequence');
+
+    addMessage(name, sequence);
   }
 
-  Future<DocumentReference> addMessage(String message) async {
-    return FirebaseFirestore.instance.collection('categories').add(<String, dynamic>{
-      'category_id': DateTime.now().millisecondsSinceEpoch,
-      'category_name': message,
+  Future<DocumentReference> addMessage(String name, String sequence) async {
+    const String pattern = 'dd-MM-yyyy hh:mm:ss';
+    final String formatted = DateFormat(pattern).format(DateTime.now());
+    Utils.logger(formatted);
+
+    return FirebaseFirestore.instance.collection('paymodes').add(<String, dynamic>{
+      'pay_id': DateTime.now().millisecondsSinceEpoch,
+      'pay_name': name,
+      'sequence': sequence,
       'is_active': true,
-      'timestamp': DateTime.now(),
+      'timestamp': formatted,
     });
+
+    /*
+    * return FirebaseFirestore.instance.collection('paymodes').add(<String, dynamic>{
+      'category_id': DateTime.now().millisecondsSinceEpoch,
+      'category_name': name,
+      'sequence': sequence,
+      'is_active': true,
+      'timestamp': formatted,
+    });
+    * */
   }
 
   @override
@@ -42,7 +59,16 @@ class AddDataScreen extends StatelessWidget {
             TextField(
               controller: textEditingController,
               decoration: const InputDecoration(
-                labelText: 'Enter message here',
+                labelText: 'Enter message',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            CustomSizedBox(),
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: sequenceEditingController,
+              decoration: const InputDecoration(
+                labelText: 'Enter sequence',
                 border: OutlineInputBorder(),
               ),
             ),

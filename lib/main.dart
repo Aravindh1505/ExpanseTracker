@@ -10,6 +10,8 @@ import '../screens/payment_mode_screen.dart';
 import '../utils/custom_theme.dart';
 import '../utils/route_names.dart';
 import '../screens/splash_screen.dart';
+import '../screens/firebase_demo.dart';
+import '../screens/otp_verification.dart';
 import '../screens/add_data.dart';
 
 void main() async {
@@ -26,12 +28,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: CustomTheme.lightTheme,
       routes: {
-        RouteNames.HOME: (_) => AddDataScreen(),
+        RouteNames.HOME: (_) => CategoriesScreen(),
         RouteNames.LOGIN_SCREEN: (_) => const LoginScreen(),
         RouteNames.OTP_VERIFICATION_SCREEN: (_) => OtpVerificationScreen(),
         RouteNames.ENTRIES_SCREEN: (_) => const EntriesScreen(),
         RouteNames.ENTRIES_FORM_SCREEN: (_) => const EntriesFormScreen(),
-        RouteNames.CATEGORIES_SCREEN: (_) => const CategoriesScreen(),
+        RouteNames.CATEGORIES_SCREEN: (_) => CategoriesScreen(),
         RouteNames.PAYMENT_MODE_SCREEN: (_) => const PaymentModeScreen(),
       },
     );
