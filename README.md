@@ -20,6 +20,9 @@ https://github.com/Amanullahgit/flutter_phone_authentication
 
 # Resources
 Installation: https://docs.flutter.dev/get-started/install
+
 CodeLabs: https://docs.flutter.dev/codelabs
+
 Packages/Libraries: https://pub.dev
+
 Youtube: https://www.youtube.com/@flutterdev/videos
