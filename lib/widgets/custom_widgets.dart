@@ -32,6 +32,23 @@ class Heading extends StatelessWidget {
   }
 }
 
+class TitleMedium extends StatelessWidget {
+  final String? text;
+
+  const TitleMedium(this.text, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text!,
+      style: const TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+}
+
 class Paragraph extends StatelessWidget {
   final String text;
   final TextAlign textAlign;
