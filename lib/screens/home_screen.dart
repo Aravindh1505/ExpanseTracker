@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expanse_tracker/widgets/custom_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
@@ -15,10 +16,17 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController _bookController = TextEditingController();
+  final TextEditingController _bookController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getBooks();
+  }
 
   Future<void> logout(BuildContext context) async {
     FirebaseAuth.instance.signOut();
@@ -31,18 +39,54 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<DocumentReference> addBook() async {
+    const String pattern = 'dd-MM-yyyy hh:mm:ss';
+    final String formatted = DateFormat(pattern).format(DateTime.now());
+    Utils.logger(formatted);
+
+    var userId = FirebaseAuth.instance.currentUser?.uid;
+    String bookName = _bookController.text.toString();
+
+    return FirebaseFirestore.instance.collection('books').doc(userId).collection('userbooks').add(<String, dynamic>{
+      'userId': userId.toString(),
+      'bookName': bookName,
+      'createdAt': DateTime.now().toString(),
+      'platform': Platform.isAndroid ? 'Android' : 'iOS'
+    });
+  }
+
+  //books/m0koHenMq2dkIbjWdnmN0g2AAew1/userbooks
+  Future<void> getBooks() async {
+    var userId = FirebaseAuth.instance.currentUser?.uid;
+
+    var collectionUrl = 'books/$userId/userbooks';
+
+    var collection = FirebaseFirestore.instance.collection(collectionUrl);
+
+    var querySnapshots = await collection.get();
+
+    for (var snapshot in querySnapshots.docs) {
+      var bookName = snapshot.data()['bookName'] as String;
+      print('bookName : $bookName');
+    }
+  }
+
   void add(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext ctx) {
           return Column(
             children: [
+              const CustomSizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   children: const [
                     Icon(Icons.close, size: 25.0),
-                    CustomSizedBox(height: 0, width: 20,),
+                    CustomSizedBox(
+                      height: 0,
+                      width: 20,
+                    ),
                     Heading('Add New Book'),
                   ],
                 ),
@@ -51,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const CustomSizedBox(),
                     TextField(
@@ -65,7 +109,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       maxLength: 25,
                       maxLines: 1,
                     ),
-                    const TitleMedium('Suggestions'),
+                    const CustomSizedBox(),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
+                      onPressed: addBook,
+                      child: const Text(
+                        'ADD',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
                   ],
                 ),
               )
