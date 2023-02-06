@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -47,11 +46,31 @@ class _HomeScreenState extends State<HomeScreen> {
     var userId = FirebaseAuth.instance.currentUser?.uid;
     String bookName = _bookController.text.toString();
 
-    return FirebaseFirestore.instance.collection('books').doc(userId).collection('userbooks').add(<String, dynamic>{
+    /*return FirebaseFirestore.instance.collection('books').doc(userId).collection('userBooks').add(<String, dynamic>{
       'userId': userId.toString(),
       'bookName': bookName,
       'createdAt': DateTime.now().toString(),
       'platform': Platform.isAndroid ? 'Android' : 'iOS'
+    });*/
+
+    /*return FirebaseFirestore.instance.collection('books').doc(userId).collection('userCategory').add(<String, dynamic>{
+      'userId': userId.toString(),
+      'category_id': DateTime.now().millisecondsSinceEpoch,
+      'category_name': 'Food',
+      'platform': Platform.isAndroid ? 'Android' : 'iOS',
+      'createdAt': DateTime.now().toString(),
+    });*/
+
+    return FirebaseFirestore.instance
+        .collection('books')
+        .doc(userId)
+        .collection('userPaymentModes')
+        .add(<String, dynamic>{
+      'userId': userId.toString(),
+      'pay_id': DateTime.now().millisecondsSinceEpoch,
+      'pay_name': 'Food',
+      'platform': Platform.isAndroid ? 'Android' : 'iOS',
+      'createdAt': DateTime.now().toString(),
     });
   }
 
@@ -67,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     for (var snapshot in querySnapshots.docs) {
       var bookName = snapshot.data()['bookName'] as String;
-      print('bookName : $bookName');
+      Utils.logger('bookName : $bookName');
     }
   }
 
