@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 class Utils {
-  static void logger(String message) {
+  static void logger(Object? object) {
     if (kDebugMode) {
-      print('ZABC $message');
+      print('ZABC $object');
     }
   }
 }

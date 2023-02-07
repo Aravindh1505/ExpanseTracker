@@ -10,6 +10,7 @@ import '../utils/route_names.dart';
 import '../utils/constants.dart';
 import '../utils/utils.dart';
 import 'login_screen.dart';
+import '../model/book.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,13 +22,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _bookController = TextEditingController();
 
+  final List<Book> _bookList = [];
+
   @override
   void initState() {
+    _getBooks();
     super.initState();
-    getBooks();
   }
 
-  Future<void> logout(BuildContext context) async {
+  Future<void> _logout(BuildContext context) async {
     FirebaseAuth.instance.signOut();
     Navigator.pushAndRemoveUntil<dynamic>(
       context,
@@ -38,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<DocumentReference> addBook() async {
+  Future<DocumentReference> _addBook() async {
     const String pattern = 'dd-MM-yyyy hh:mm:ss';
     final String formatted = DateFormat(pattern).format(DateTime.now());
     Utils.logger(formatted);
@@ -75,10 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //books/m0koHenMq2dkIbjWdnmN0g2AAew1/userbooks
-  Future<void> getBooks() async {
+  Future<void> _getBooks() async {
+    _bookList.clear();
+
     var userId = FirebaseAuth.instance.currentUser?.uid;
 
-    var collectionUrl = 'books/$userId/userbooks';
+    var collectionUrl = 'book/$userId/userbooks';
 
     var collection = FirebaseFirestore.instance.collection(collectionUrl);
 
@@ -124,14 +129,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: Text('Enter book name'),
                       ),
                       controller: _bookController,
-                      onSubmitted: (value) => _submit,
+                      onSubmitted: (value) => _addBook,
                       maxLength: 25,
                       maxLines: 1,
                     ),
                     const CustomSizedBox(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
-                      onPressed: addBook,
+                      onPressed: _addBook,
                       child: const Text(
                         'ADD',
                         style: TextStyle(color: Colors.white),
@@ -145,8 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  void _submit() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,14 +157,21 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text(Constants.TITLE_HOME),
         actions: [
           IconButton(
-            onPressed: () => logout(context),
+            onPressed: () => _logout(context),
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
           )
         ],
       ),
-      body: Center(
-        child: Text('Home screen contents available here!'),
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        child: ListView.builder(
+          itemBuilder: (ctx, index) => Text(
+            _bookList[index].bookName,
+          ),
+          itemCount: _bookList.length,
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => add(context),
