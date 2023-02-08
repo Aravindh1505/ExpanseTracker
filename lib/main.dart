@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: CustomTheme.lightTheme,
       routes: {
-        RouteNames.HOME: (_) => const SplashScreen(),
+        RouteNames.HOME: (_) => SplashScreen(),
         RouteNames.LOGIN_SCREEN: (_) => const LoginScreen(),
         RouteNames.OTP_VERIFICATION_SCREEN: (_) => OtpVerificationScreen(),
         RouteNames.ENTRIES_SCREEN: (_) => const EntriesScreen(),

@@ -12,15 +12,16 @@ import '../utils/utils.dart';
 import 'login_screen.dart';
 import '../model/book.dart';
 import '../widgets/custom_widgets.dart';
+import '../screens/base_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget  {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with BaseScreen{
   final TextEditingController _bookController = TextEditingController();
 
   final List<Book> _bookList = [];
@@ -34,16 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _logout(BuildContext context) async {
     FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => const LoginScreen(),
-      ),
-      (route) => false,
-    );
+    pushAndRemove(context, const LoginScreen());
   }
 
-  Future<DocumentReference> _addBook() async {
+  void _addBook() async {
     const String pattern = 'dd-MM-yyyy hh:mm:ss';
     final String formatted = DateFormat(pattern).format(DateTime.now());
     Utils.logger(formatted);
@@ -51,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var userId = FirebaseAuth.instance.currentUser?.uid;
     String bookName = _bookController.text.toString();
 
-    return FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection(FirestoreConstants.BOOKS)
         .doc(userId)
         .collection(FirestoreConstants.USERBOOKS)
@@ -91,9 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
 
-    var collection = FirebaseFirestore.instance
-        .collection(FirestoreConstants.getUserBooks())
-        .orderBy('createdAt', descending: true);
+    var collection =
+        FirebaseFirestore.instance.collection(FirestoreConstants.GETUSERBOOKS()).orderBy('createdAt', descending: true);
 
     var querySnapshots = await collection.get();
 
@@ -119,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.of(context).pushNamed(RouteNames.ENTRIES_SCREEN, arguments: book);
   }
 
-  void add(BuildContext context) {
+  void _addBookShowModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext ctx) {
@@ -129,13 +123,15 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
-                  children: const [
-                    Icon(Icons.close, size: 25.0),
-                    CustomSizedBox(
-                      height: 0,
-                      width: 20,
+                  children: [
+                    GestureDetector(
+                      child: const Icon(Icons.close, size: 25.0),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
-                    Heading('Add New Book'),
+                    const CustomSizedBox(height: 0, width: 20),
+                    const Heading('Add New Book'),
                   ],
                 ),
               ),
@@ -153,14 +149,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         label: Text('Enter book name'),
                       ),
                       controller: _bookController,
-                      onSubmitted: (value) => _addBook,
+                      onSubmitted: (value) {
+                        Navigator.of(context).pop();
+                        _addBook();
+                      },
                       maxLength: 25,
                       maxLines: 1,
                     ),
                     const CustomSizedBox(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
-                      onPressed: _addBook,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _addBook();
+                      },
                       child: const Text(
                         'ADD',
                         style: TextStyle(color: Colors.white),
@@ -172,6 +174,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           );
         });
+  }
+
+  void _deleteBook(int index) async {
+    var documentId = _bookList[index].id;
+    FirebaseFirestore.instance.collection(FirestoreConstants.GETUSERBOOKS()).doc(documentId).delete();
+
+    setState(() {
+      _bookList.removeAt(index);
+    });
   }
 
   @override
@@ -198,6 +209,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     leading: const Icon(Icons.book),
                     style: ListTileStyle.list,
                     onTap: () => _navigateToEntriesScreen(_bookList[index]),
+                    trailing: GestureDetector(
+                      onTap: () => _deleteBook(index),
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
                   const Divider()
                 ],
@@ -205,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _bookList.length,
             ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => add(context),
+        onPressed: () => _addBookShowModalBottomSheet(context),
         icon: const Icon(Icons.add),
         label: const Text('Add Book'),
       ),

@@ -10,8 +10,7 @@ class EntriesScreen extends StatelessWidget {
   const EntriesScreen({Key? key}) : super(key: key);
 
   void cashInAndOut(BuildContext context, CashType type, Book book) {
-    Utils.logger(type.name);
-
+    book.type = type;
     Navigator.of(context).pushNamed(RouteNames.ENTRIES_FORM_SCREEN, arguments: book);
   }
 

@@ -9,11 +9,13 @@ class FirestoreConstants {
 
   static const USERBOOKS = 'userBooks';
 
+  static const USERENTRIES = 'userEntries';
+
   static const USERCATEGORY = 'userCategory';
 
   static const USERPAYMENTMODES = 'userPaymentModes';
 
-  static String getUserBooks() => 'books/$currentUserId/$USERBOOKS';
+  static String GETUSERBOOKS() => 'books/$currentUserId/$USERBOOKS';
 
   static const CATEGORIES = 'categories';
 

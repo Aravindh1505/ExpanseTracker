@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../model/book.dart';
+import '../utils/firestore_constants.dart';
 import '../widgets/custom_widgets.dart';
+import '../model/cash_type.dart';
+import 'base_screen.dart';
 
 class EntriesFormScreen extends StatefulWidget {
   const EntriesFormScreen({Key? key}) : super(key: key);
@@ -10,7 +16,7 @@ class EntriesFormScreen extends StatefulWidget {
   State<EntriesFormScreen> createState() => _EntriesFormScreenState();
 }
 
-class _EntriesFormScreenState extends State<EntriesFormScreen> {
+class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
   late TextEditingController _amountController;
   late TextEditingController _remarkController;
 
@@ -28,13 +34,58 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> {
     super.dispose();
   }
 
+  void _save(Book book) async {
+    var amount = _amountController.text.toString();
+    var remark = _remarkController.text.toString();
+
+    Map<String, dynamic> data = {
+      'userId': currentUserId,
+      'bookName': book.bookName,
+      'type': book.type.name,
+      'amount': amount,
+      'remark': remark,
+      'category': 'other',
+      'paymentMode': 'cash',
+      'date': getCurrentDateAndTime(),
+      'platform': getPlatform(),
+      'createdAt': getCurrentDateAndTime(),
+    };
+
+    FirebaseFirestore.instance
+        .collection(FirestoreConstants.USERENTRIES)
+        .doc(book.id)
+        .collection(book.bookName)
+        .doc()
+        .set(data);
+
+    /*
+    * FirebaseFirestore.instance
+        .collection(FirestoreConstants.BOOKS)
+        .doc(currentUserId)
+        .collection(FirestoreConstants.USERENTRIES)
+        .doc(book.id)
+        .collection(DateTime.now().millisecondsSinceEpoch.toString())
+        .add(<String, dynamic>{
+      'userId': currentUserId,
+      'bookName': book.bookName,
+      'type': book.type.name,
+      'amount': amount,
+      'remark': remark,
+      'category': 'other',
+      'paymentMode': 'cash',
+      'date': getCurrentDateAndTime(),
+      'platform': getPlatform(),
+      'createdAt': getCurrentDateAndTime(),
+    });*/
+  }
+
   @override
   Widget build(BuildContext context) {
     Book book = ModalRoute.of(context)?.settings.arguments as Book;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cash in/out entry'),
+        title: Text(book.type == CashType.CASH_IN ? 'Cash in' : 'Cash out'),
       ),
       body: Container(
         margin: const EdgeInsets.all(5.0),
@@ -74,7 +125,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> {
                       child: const Text('SAVE & ADD NEW'),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => _save(book),
                       child: const Text('SAVE'),
                     )
                   ],
