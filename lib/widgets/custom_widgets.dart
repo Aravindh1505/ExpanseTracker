@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 
+
+AppBar CustomAppBar({required BuildContext context, required String title, List<Widget>? actions = null}) {
+  return AppBar(
+    foregroundColor: Colors.white,
+    backgroundColor: Theme.of(context).primaryColor,
+    title: Text(title),
+    actions: actions ?? [],
+  );
+}
+
 class CustomSizedBox extends StatelessWidget {
   final double width;
   final double height;

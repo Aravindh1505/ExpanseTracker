@@ -1,0 +1,1 @@
+enum CashType { CASH_IN, CASH_OUT, NONE}
