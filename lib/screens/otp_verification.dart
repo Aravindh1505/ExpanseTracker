@@ -134,8 +134,6 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
 
   @override
   void initState() {
-    super.initState();
-
     final widgetsBinding = WidgetsBinding.instance;
     widgetsBinding.addPostFrameCallback((callback) {
       String? mobileNumber = ModalRoute.of(context)?.settings.arguments as String?;
@@ -144,5 +142,6 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
         _verifyPhone();
       }
     });
+    super.initState();
   }
 }

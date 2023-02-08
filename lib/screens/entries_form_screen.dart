@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../model/book.dart';
 import '../utils/firestore_constants.dart';
+import '../utils/utils.dart';
 import '../widgets/custom_widgets.dart';
 import '../model/cash_type.dart';
 import 'base_screen.dart';
@@ -17,6 +18,9 @@ class EntriesFormScreen extends StatefulWidget {
 }
 
 class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
+
+  bool _isNewEntryAdded = false;
+
   late TextEditingController _amountController;
   late TextEditingController _remarkController;
 
@@ -58,6 +62,9 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
         .doc()
         .set(data);
 
+    _isNewEntryAdded = true;
+
+
     /*
     * FirebaseFirestore.instance
         .collection(FirestoreConstants.BOOKS)
@@ -83,56 +90,62 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
   Widget build(BuildContext context) {
     Book book = ModalRoute.of(context)?.settings.arguments as Book;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(book.type == CashType.CASH_IN ? 'Cash in' : 'Cash out'),
-      ),
-      body: Container(
-        margin: const EdgeInsets.all(5.0),
-        child: Column(
-          children: [
-            const CustomSizedBox(height: 20),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.money),
-                label: Text('Enter amount'),
-              ),
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              maxLength: 10,
-            ),
-            const CustomSizedBox(height: 10),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.note_alt),
-                label: Text('Enter remark'),
-              ),
-              controller: _remarkController,
-              keyboardType: TextInputType.text,
-              maxLength: 25,
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('SAVE & ADD NEW'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _save(book),
-                      child: const Text('SAVE'),
-                    )
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, _isNewEntryAdded);
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(book.type == CashType.CASH_IN ? 'Cash in' : 'Cash out'),
+        ),
+        body: Container(
+          margin: const EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              const CustomSizedBox(height: 20),
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.money),
+                  label: Text('Enter amount'),
                 ),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                maxLength: 10,
               ),
-            )
-          ],
+              const CustomSizedBox(height: 10),
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.note_alt),
+                  label: Text('Enter remark'),
+                ),
+                controller: _remarkController,
+                keyboardType: TextInputType.text,
+                maxLength: 25,
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('SAVE & ADD NEW'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _save(book),
+                        child: const Text('SAVE'),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

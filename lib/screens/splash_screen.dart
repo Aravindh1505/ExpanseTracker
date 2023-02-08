@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget with BaseScreen {
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () => {navigate(context)});
+    Timer timer = Timer(const Duration(seconds: 2), () => {navigate(context)});
     return Scaffold(body: buildBody());
   }
 
