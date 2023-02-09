@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import '../model/book.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/utils.dart';
+import '../widgets/custom_dropdown.dart';
 import '../widgets/custom_widgets.dart';
 import '../model/cash_type.dart';
+import '../widgets/dropdown_formfield.dart';
 import 'base_screen.dart';
 
 class EntriesFormScreen extends StatefulWidget {
@@ -18,11 +20,14 @@ class EntriesFormScreen extends StatefulWidget {
 }
 
 class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
-
   bool _isNewEntryAdded = false;
 
   late TextEditingController _amountController;
   late TextEditingController _remarkController;
+
+  String _selectedCategory = '';
+
+  String _myActivity = '';
 
   @override
   void initState() {
@@ -63,7 +68,6 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
         .set(data);
 
     _isNewEntryAdded = true;
-
 
     /*
     * FirebaseFirestore.instance
@@ -124,6 +128,33 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                 controller: _remarkController,
                 keyboardType: TextInputType.text,
                 maxLength: 25,
+              ),
+              DropDownFormField(
+                titleText: 'Choose Category',
+                hintText: 'Please choose one',
+                value: _myActivity,
+                onSaved: (value) {
+                  setState(() {
+                    _myActivity = value;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _myActivity = value;
+                  });
+                },
+                dataSource: const [
+                  {
+                    "display": "Running",
+                    "value": "Running",
+                  },
+                  {
+                    "display": "Climbing",
+                    "value": "Climbing",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value', validator: (value) {  },
               ),
               Expanded(
                 child: Align(
