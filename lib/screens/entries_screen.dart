@@ -1,5 +1,7 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../model/book.dart';
 import '../model/entries.dart';
@@ -9,6 +11,7 @@ import '../widgets/custom_widgets.dart';
 import '../utils/route_names.dart';
 import '../model/cash_type.dart';
 import 'base_screen.dart';
+import '../provider/entries_provider.dart';
 
 class EntriesScreen extends StatefulWidget {
   const EntriesScreen({Key? key}) : super(key: key);
@@ -18,81 +21,54 @@ class EntriesScreen extends StatefulWidget {
 }
 
 class _EntriesScreenState extends State<EntriesScreen> with BaseScreen {
-  bool _isLoading = true;
-  final List<Entries> _entriesList = [];
-  late Book book;
+  EntriesProvider _entriesProvider = EntriesProvider();
+  List<Entries> _entries = [];
+  late Book _book;
 
   void cashInAndOut(BuildContext context, CashType type, Book book) {
     book.type = type;
     Navigator.of(context).pushNamed(RouteNames.ENTRIES_FORM_SCREEN, arguments: book).then((value) {
       Utils.logger(value);
       if (value != null && value == true) {
-        _getEntries();
+        //entriesProvider.fetchEntries(book);
       }
     });
-  }
-
-  Future<void> _getEntries() async {
-    _entriesList.clear();
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    var collection =
-        FirebaseFirestore.instance.collection(FirestoreConstants.USERENTRIES).doc(book.id).collection(book.bookName);
-
-    var querySnapshots = await collection.get();
-
-    for (var snapshots in querySnapshots.docs) {
-      Entries entries = Entries(
-        id: snapshots.id,
-        type: snapshots.data()['type'],
-        bookName: snapshots.data()['bookName'],
-        amount: snapshots.data()['amount'],
-        remark: snapshots.data()['remark'],
-        category: snapshots.data()['category'],
-        paymentMode: snapshots.data()['paymentMode'],
-        date: snapshots.data()['date'],
-        createdAt: snapshots.data()['createdAt'],
-      );
-
-      _entriesList.add(entries);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    Utils.logger(_entriesList.length);
   }
 
   @override
   void initState() {
     final widgetsBinding = WidgetsBinding.instance;
     widgetsBinding.addPostFrameCallback((callback) {
-      book = ModalRoute.of(context)?.settings.arguments as Book;
-      _getEntries();
+
     });
     super.initState();
   }
 
+  void _config() {
+     _book = ModalRoute.of(context)?.settings.arguments as Book;
+    _entriesProvider = Provider.of<EntriesProvider>(context);
+    _entriesProvider.fetchEntries(_book);
+    _entries = _entriesProvider.entries;
+  }
+
   @override
   Widget build(BuildContext context) {
-    book = ModalRoute.of(context)?.settings.arguments as Book;
-    Utils.logger(book.id);
+    _config();
+
+    // _book = ModalRoute.of(context)?.settings.arguments as Book;
+    // Utils.logger(_book.id);
 
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
-        title: book.bookName,
+        title: _book.bookName,
       ),
       body: Column(
         children: [
           SizedBox(
             height: 600,
             width: double.infinity,
-            child: _isLoading
+            child: _entriesProvider.isLoading
                 ? const Center(
                     widthFactor: 30,
                     heightFactor: 30,
@@ -109,8 +85,8 @@ class _EntriesScreenState extends State<EntriesScreen> with BaseScreen {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Heading(_entriesList[index].remark),
-                                TitleMedium(_entriesList[index].amount),
+                                Heading(_entries[index].remark),
+                                TitleMedium(_entries[index].amount),
                               ],
                             ),
                             const CustomSizedBox(
@@ -119,9 +95,9 @@ class _EntriesScreenState extends State<EntriesScreen> with BaseScreen {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                _buildLabel(_entriesList[index].category, const Color.fromARGB(100, 235, 203, 174)),
+                                _buildLabel(_entries[index].category, const Color.fromARGB(100, 235, 203, 174)),
                                 const CustomSizedBox(height: 0, width: 20),
-                                _buildLabel(_entriesList[index].paymentMode, const Color.fromARGB(100, 200, 238, 217)),
+                                _buildLabel(_entries[index].paymentMode, const Color.fromARGB(100, 200, 238, 217)),
                                 const CustomSizedBox(height: 0, width: 10),
                                 //Paragraph(getFormattedDate(_entriesList[index].date)),
                               ],
@@ -130,7 +106,7 @@ class _EntriesScreenState extends State<EntriesScreen> with BaseScreen {
                         ),
                       ),
                     ),
-                    itemCount: _entriesList.length,
+                    itemCount: _entries.length,
                   ),
           ),
           Expanded(
@@ -145,7 +121,7 @@ class _EntriesScreenState extends State<EntriesScreen> with BaseScreen {
                       backgroundColor: Colors.green,
                       fixedSize: const Size(150, 30),
                     ),
-                    onPressed: () => cashInAndOut(context, CashType.CASH_IN, book),
+                    onPressed: () => cashInAndOut(context, CashType.CASH_IN, _book),
                     icon: const Icon(Icons.add),
                     label: const Text('CASH IN'),
                   ),
@@ -154,7 +130,7 @@ class _EntriesScreenState extends State<EntriesScreen> with BaseScreen {
                       backgroundColor: Colors.red,
                       fixedSize: const Size(150, 30),
                     ),
-                    onPressed: () => cashInAndOut(context, CashType.CASH_OUT, book),
+                    onPressed: () => cashInAndOut(context, CashType.CASH_OUT, _book),
                     icon: const Icon(Icons.remove),
                     label: const Text('CASH OUT'),
                   )
