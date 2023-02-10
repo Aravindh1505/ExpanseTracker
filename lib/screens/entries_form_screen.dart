@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../model/book.dart';
+import '../provider/entries_provider.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/utils.dart';
 import '../widgets/custom_dropdown.dart';
@@ -43,51 +45,12 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     super.dispose();
   }
 
-  void _save(Book book) async {
+  void _save(Book book, BuildContext context) async {
     var amount = _amountController.text.toString();
     var remark = _remarkController.text.toString();
 
-    Map<String, dynamic> data = {
-      'userId': currentUserId,
-      'bookName': book.bookName,
-      'type': book.type.name,
-      'amount': amount,
-      'remark': remark,
-      'category': 'other',
-      'paymentMode': 'cash',
-      'date': getCurrentDateAndTime(),
-      'platform': getPlatform(),
-      'createdAt': getCurrentDateAndTime(),
-    };
-
-    FirebaseFirestore.instance
-        .collection(FirestoreConstants.USERENTRIES)
-        .doc(book.id)
-        .collection(book.bookName)
-        .doc()
-        .set(data);
-
-    _isNewEntryAdded = true;
-
-    /*
-    * FirebaseFirestore.instance
-        .collection(FirestoreConstants.BOOKS)
-        .doc(currentUserId)
-        .collection(FirestoreConstants.USERENTRIES)
-        .doc(book.id)
-        .collection(DateTime.now().millisecondsSinceEpoch.toString())
-        .add(<String, dynamic>{
-      'userId': currentUserId,
-      'bookName': book.bookName,
-      'type': book.type.name,
-      'amount': amount,
-      'remark': remark,
-      'category': 'other',
-      'paymentMode': 'cash',
-      'date': getCurrentDateAndTime(),
-      'platform': getPlatform(),
-      'createdAt': getCurrentDateAndTime(),
-    });*/
+    var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
+    entriesProvider.save(book, amount, remark);
   }
 
   @override
@@ -154,7 +117,8 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                   },
                 ],
                 textField: 'display',
-                valueField: 'value', validator: (value) {  },
+                valueField: 'value',
+                validator: (value) {},
               ),
               Expanded(
                 child: Align(
@@ -168,7 +132,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                         child: const Text('SAVE & ADD NEW'),
                       ),
                       ElevatedButton(
-                        onPressed: () => _save(book),
+                        onPressed: () => _save(book, context),
                         child: const Text('SAVE'),
                       )
                     ],

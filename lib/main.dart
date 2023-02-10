@@ -16,6 +16,8 @@ import '../provider/entries_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Provider.debugCheckInvalidValueType = null;
+
   runApp(const MyApp());
 }
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<EntriesProvider>(
+        ListenableProvider<EntriesProvider>(
           create: (ctx) => EntriesProvider(),
         )
       ],

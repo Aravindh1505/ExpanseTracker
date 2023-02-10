@@ -1,22 +1,25 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/book.dart';
 import '../model/entries.dart';
+import '../screens/base_screen.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/utils.dart';
 
-class EntriesProvider with ChangeNotifier {
+class EntriesProvider with ChangeNotifier, BaseScreen {
   final List<Entries> _entriesList = [];
   bool _isLoading = true;
 
-  List<Entries> get entries {
+  //UnmodifiableListView<Entries> get list => UnmodifiableListView(_entriesList);
+
+  List<Entries> get list {
     return [..._entriesList];
   }
 
   bool get isLoading => _isLoading;
 
-  Future<void> fetchEntries(Book book) async {
+  Future<List<Entries>> fetchEntries(Book book) async {
     _entriesList.clear();
     _isLoading = true;
 
@@ -41,7 +44,36 @@ class EntriesProvider with ChangeNotifier {
     }
 
     _isLoading = false;
-    Utils.logger(_entriesList.length);
+    Utils.logger('entries length : ${_entriesList.length}');
     notifyListeners();
+    return _entriesList;
+  }
+
+  Future<void> save(Book book, String amount, String remark) async {
+    // var amount = _amountController.text.toString();
+    // var remark = _remarkController.text.toString();
+
+    Map<String, dynamic> data = {
+      'userId': currentUserId,
+      'bookName': book.bookName,
+      'type': book.type.name,
+      'amount': amount,
+      'remark': remark,
+      'category': 'other',
+      'paymentMode': 'cash',
+      'date': getCurrentDateAndTime(),
+      'platform': getPlatform(),
+      'createdAt': getCurrentDateAndTime(),
+    };
+
+    FirebaseFirestore.instance
+        .collection(FirestoreConstants.USERENTRIES)
+        .doc(book.id)
+        .collection(book.bookName)
+        .doc()
+        .set(data);
+
+    _entriesList.clear();
+    fetchEntries(book);
   }
 }
