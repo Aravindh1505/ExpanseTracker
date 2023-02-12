@@ -20,7 +20,6 @@ class EntriesScreen extends StatefulWidget {
 }
 
 class _EntriesScreenState extends State<EntriesScreen> {
-  bool isInitialLaunch = true;
 
   @override
   void initState() {
@@ -37,15 +36,11 @@ class _EntriesScreenState extends State<EntriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Book book = ModalRoute.of(context)?.settings.arguments as Book;
-    var entriesProvider = Provider.of<EntriesProvider>(context, listen: true);
-    var isLoading = entriesProvider.isLoading;
-    late Future<List<Entries>> fetchEntries;
+    Utils.logger('Entries screen rebuild...');
 
-    if (isInitialLaunch) {
-      fetchEntries = entriesProvider.fetchEntries(book);
-      isInitialLaunch = false;
-    }
+    Book book = ModalRoute.of(context)?.settings.arguments as Book;
+    var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
+    Future<List<Entries>> fetchEntries = entriesProvider.fetchEntries(book);
 
     return Scaffold(
       appBar: CustomAppBar(context: context, title: book.bookName),
@@ -56,9 +51,12 @@ class _EntriesScreenState extends State<EntriesScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 500,
+                  height: 600,
                   width: double.infinity,
-                  child: isLoading ? const CustomProgress() : EntriesItem(snapshot.data),
+                  child: Consumer<EntriesProvider>(
+                    builder: (ctx, entries, child) =>
+                        entries.isLoading ? const CustomProgress() : EntriesItem(snapshot.data),
+                  ),
                 ),
                 EntriesBottomButton(cashInAndOut, book),
               ],

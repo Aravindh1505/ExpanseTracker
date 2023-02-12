@@ -10,38 +10,43 @@ class EntriesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return entries?.length == 0 ? Container() : ListView.builder(
-      itemBuilder: (ctx, index) => Card(
-        elevation: 5.0,
-        child: Container(
-          margin: const EdgeInsets.all(10.0),
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Heading(entries?[index]?.remark),
-                    TitleMedium(entries?[index]?.amount),
-                  ],
+    return entries?.length == 0 ? const Center(
+      child: Paragraph('No entries found'),
+    ) : ListView.builder(
+      itemBuilder: (ctx, index) => SizedBox(
+        height: 120,
+        child: Card(
+          elevation: 5.0,
+          child: Container(
+            margin: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Heading(entries?[index]?.remark),
+                      TitleMedium(entries?[index]?.amount),
+                    ],
+                  ),
                 ),
-              ),
-              const CustomSizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildLabel(entries?[index]?.category, const Color.fromARGB(100, 235, 203, 174)),
-                  const CustomSizedBox(height: 0, width: 20),
-                  _buildLabel(entries?[index]?.paymentMode, const Color.fromARGB(100, 200, 238, 217)),
-                  const CustomSizedBox(height: 0, width: 10),
-                  //Paragraph(getFormattedDate(_entriesList[index].date)),
-                ],
-              )
-            ],
+                const CustomSizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _buildLabel(entries?[index]?.category, const Color.fromARGB(100, 235, 203, 174)),
+                    const CustomSizedBox(height: 0, width: 20),
+                    _buildLabel(entries?[index]?.paymentMode, const Color.fromARGB(100, 200, 238, 217)),
+                    const CustomSizedBox(height: 0, width: 10),
+                    //Paragraph(getFormattedDate(_entriesList[index].date)),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

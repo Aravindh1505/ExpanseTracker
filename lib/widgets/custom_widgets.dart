@@ -14,7 +14,7 @@ class CustomSizedBox extends StatelessWidget {
   final double width;
   final double height;
 
-  const CustomSizedBox({super.key, this.width = double.infinity, this.height = 30});
+  const CustomSizedBox({super.key, this.width = double.infinity, this.height = 20});
 
   @override
   Widget build(BuildContext context) {

@@ -2,16 +2,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/splash_screen.dart';
 import '../screens/categories_screen.dart';
 import '../screens/entries_form_screen.dart';
 import '../screens/entries_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/otp_verification.dart';
 import '../screens/payment_mode_screen.dart';
-import '../screens/splash_screen.dart';
+
 import '../utils/custom_theme.dart';
 import '../utils/route_names.dart';
+
 import '../provider/entries_provider.dart';
+import '../provider/categories_provider.dart';
+import '../provider/paymode_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,9 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ListenableProvider<EntriesProvider>(
-          create: (ctx) => EntriesProvider(),
-        )
+        Provider<EntriesProvider>(create: (_) => EntriesProvider()),
+        Provider<CategoriesProvider>(create: (_) => CategoriesProvider()),
+        Provider<PayModeProvider>(create: (_) => PayModeProvider()),
       ],
       child: MaterialApp(
         theme: CustomTheme.lightTheme,

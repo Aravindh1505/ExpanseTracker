@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expanse_tracker/provider/paymode_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/categories_provider.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
@@ -14,14 +17,14 @@ import '../model/book.dart';
 import '../widgets/custom_widgets.dart';
 import '../screens/base_screen.dart';
 
-class HomeScreen extends StatefulWidget  {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with BaseScreen{
+class _HomeScreenState extends State<HomeScreen> with BaseScreen {
   final TextEditingController _bookController = TextEditingController();
 
   final List<Book> _bookList = [];
@@ -30,6 +33,9 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen{
   @override
   void initState() {
     _getBooks();
+
+    Provider.of<CategoriesProvider>(context, listen: false).fetchCategories();
+    Provider.of<PayModeProvider>(context, listen: false).fetchPayModes();
     super.initState();
   }
 

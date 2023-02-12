@@ -23,8 +23,11 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
     _entriesList.clear();
     _isLoading = true;
 
-    var collection =
-        FirebaseFirestore.instance.collection(FirestoreConstants.USERENTRIES).doc(book.id).collection(book.bookName);
+    var collection = FirebaseFirestore.instance
+        .collection(FirestoreConstants.USERENTRIES)
+        .doc(book.id)
+        .collection(book.bookName)
+        .orderBy('createdAt', descending: true);
 
     var querySnapshots = await collection.get();
 
@@ -50,9 +53,6 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
   }
 
   Future<void> save(Book book, String amount, String remark) async {
-    // var amount = _amountController.text.toString();
-    // var remark = _remarkController.text.toString();
-
     Map<String, dynamic> data = {
       'userId': currentUserId,
       'bookName': book.bookName,

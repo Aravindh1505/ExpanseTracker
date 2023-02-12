@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'custom_widgets.dart';
+
 class DropDownFormField extends FormField<dynamic> {
   final String titleText;
   final String hintText;
@@ -59,7 +61,14 @@ class DropDownFormField extends FormField<dynamic> {
                         items: dataSource.map((item) {
                           return DropdownMenuItem<dynamic>(
                             value: item[valueField],
-                            child: Text(item[textField], overflow: TextOverflow.ellipsis),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TitleMedium(item[textField]),
+                                const Divider(),
+                              ],
+                            ),
                           );
                         }).toList(),
                       ),
@@ -68,7 +77,7 @@ class DropDownFormField extends FormField<dynamic> {
                   SizedBox(height: state.hasError ? 5.0 : 0.0),
                   Text(
                     state.hasError ? state.errorText! : '',
-                    style: TextStyle(color: Colors.redAccent.shade700, fontSize: state.hasError ? 12.0 : 0.0),
+                    style: TextStyle(fontSize: state.hasError ? 12.0 : 0.0),
                   ),
                 ],
               ),
