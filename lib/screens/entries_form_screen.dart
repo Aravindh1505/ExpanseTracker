@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,15 +84,15 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
               visible: true,
               child: TextField(
                 enabled: true,
-                focusNode: FocusNode(),
+                readOnly: true,
+                showCursor: false,
+                autofocus: false,
                 enableInteractiveSelection: false,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
-                  label: Text('Choose category'),
+                  label: Text('category'),
                 ),
-                controller: _remarkController,
-                keyboardType: TextInputType.text,
                 onTap: () {
                   Navigator.of(context).pushNamed(RouteNames.CATEGORIES_SCREEN);
                 },

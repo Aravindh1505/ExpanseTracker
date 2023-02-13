@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 AppBar CustomAppBar({required BuildContext context, required String title, List<Widget>? actions = null}) {
   return AppBar(
     foregroundColor: Colors.white,
@@ -62,18 +61,20 @@ class TitleMedium extends StatelessWidget {
 class Paragraph extends StatelessWidget {
   final String text;
   final TextAlign textAlign;
+  final Color textColor;
 
-  const Paragraph(this.text, {this.textAlign = TextAlign.center});
+  const Paragraph(this.text, {this.textAlign = TextAlign.start, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
+        color: textColor,
         fontSize: 16.0,
         fontWeight: FontWeight.w500,
       ),
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
     );
   }
 }

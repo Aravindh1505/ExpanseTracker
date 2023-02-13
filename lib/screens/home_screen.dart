@@ -12,6 +12,7 @@ import '../utils/firestore_constants.dart';
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
 import '../utils/utils.dart';
+import '../widgets/custom_floating_button.dart';
 import 'login_screen.dart';
 import '../model/book.dart';
 import '../widgets/custom_widgets.dart';
@@ -228,10 +229,9 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
               ),
               itemCount: _bookList.length,
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _addBookShowModalBottomSheet(context),
-        icon: const Icon(Icons.add),
-        label: const Text('Add Book'),
+      floatingActionButton: CustomFloatingButton(
+        label: 'Add Book',
+        callback: () => _addBookShowModalBottomSheet(context),
       ),
     );
   }

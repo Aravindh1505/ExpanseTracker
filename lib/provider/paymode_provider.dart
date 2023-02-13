@@ -14,25 +14,25 @@ class PayModeProvider with ChangeNotifier {
 
     var collection = FirebaseFirestore.instance
         .collection('paymodes')
-        .where('is_active', isEqualTo: true);
+        .where('is_active', isEqualTo: true)
+        .orderBy('sequence', descending: true);
 
     var querySnapshots = await collection.get();
 
     for (var snapshot in querySnapshots.docs) {
       _payModeList.add({
-        "documentId" : snapshot.id,
-        "payId" : snapshot.data()['pay_id'],
-        "payName" : snapshot.data()['pay_name'],
+        "documentId": snapshot.id,
+        "payId": snapshot.data()['pay_id'],
+        "payName": snapshot.data()['pay_name'],
         "display": snapshot.data()['pay_name'],
         "value": snapshot.data()['pay_name'],
-        "sequence" : snapshot.data()['sequence']
+        "sequence": snapshot.data()['sequence']
       });
     }
 
     Utils.logger('payModeList size ${_payModeList.length}');
     notifyListeners();
   }
-
 
   Future<DocumentReference> addPayMode(String name) async {
     const String pattern = 'dd-MM-yyyy hh:mm:ss';
