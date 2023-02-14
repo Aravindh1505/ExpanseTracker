@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<EntriesProvider>(create: (_) => EntriesProvider()),
-        Provider<CategoriesProvider>(create: (_) => CategoriesProvider()),
-        Provider<PayModeProvider>(create: (_) => PayModeProvider()),
+        ChangeNotifierProvider<EntriesProvider>(create: (_) => EntriesProvider()),
+        ChangeNotifierProvider<CategoriesProvider>(create: (_) => CategoriesProvider()),
+        ChangeNotifierProvider<PayModeProvider>(create: (_) => PayModeProvider()),
       ],
       child: MaterialApp(
         theme: CustomTheme.lightTheme,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class BaseScreen {
@@ -18,7 +19,25 @@ class BaseScreen {
     return DateFormat.yMMMMd().format(tempDate);
   }
 
+  showSnackBar(BuildContext context, String message) {
+    var snackBar = SnackBar(
+      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
+  showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 
   void pushAndRemove(BuildContext context, Widget widget) {
     Navigator.pushAndRemoveUntil<dynamic>(
@@ -26,7 +45,7 @@ class BaseScreen {
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => widget,
       ),
-          (route) => false,
+      (route) => false,
     );
   }
 }

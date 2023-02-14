@@ -1,3 +1,6 @@
+import 'package:expanse_tracker/provider/categories_provider.dart';
+import 'package:expanse_tracker/provider/paymode_provider.dart';
+import 'package:expanse_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +50,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
 
   @override
   Widget build(BuildContext context) {
+    Utils.logger('entries form screen rebuild...');
     Book book = ModalRoute.of(context)?.settings.arguments as Book;
 
     return Scaffold(
@@ -80,9 +84,8 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
               maxLength: 25,
             ),
             const CustomSizedBox(),
-            Visibility(
-              visible: true,
-              child: TextField(
+            Consumer<CategoriesProvider>(
+              builder: (ctx, category, child) => TextField(
                 enabled: true,
                 readOnly: true,
                 showCursor: false,
@@ -91,10 +94,30 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
-                  label: Text('category'),
+                  label: Text('Category'),
                 ),
+                controller: TextEditingController(text: category.selectedCategory),
                 onTap: () {
                   Navigator.of(context).pushNamed(RouteNames.CATEGORIES_SCREEN);
+                },
+              ),
+            ),
+            const CustomSizedBox(height: 35),
+            Consumer<PayModeProvider>(
+              builder: (ctx, paymode, child) => TextField(
+                enabled: true,
+                readOnly: true,
+                showCursor: false,
+                autofocus: false,
+                enableInteractiveSelection: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.payment),
+                  label: Text('PayMode'),
+                ),
+                controller: TextEditingController(text: paymode.selectedPayMode),
+                onTap: () {
+                  Navigator.of(context).pushNamed(RouteNames.PAYMENT_MODE_SCREEN);
                 },
               ),
             ),

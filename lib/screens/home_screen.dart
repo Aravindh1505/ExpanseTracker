@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../model/bottom_sheet.dart';
 import '../provider/categories_provider.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/route_names.dart';
@@ -35,8 +36,11 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
   void initState() {
     _getBooks();
 
-    Provider.of<CategoriesProvider>(context, listen: false).fetchCategories();
     Provider.of<PayModeProvider>(context, listen: false).fetchPayModes();
+    var categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+    categoriesProvider.fetchCategories();
+    categoriesProvider.fetchUserCategories();
+
     super.initState();
   }
 
@@ -63,6 +67,8 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
       'createdAt': DateTime.now().toString(),
       'platform': Platform.isAndroid ? 'Android' : 'iOS'
     }).whenComplete(() => _getBooks());
+
+    Navigator.of(context).pop();
 
     /*return FirebaseFirestore.instance.collection('books').doc(userId).collection('userCategory').add(<String, dynamic>{
       'userId': userId.toString(),
@@ -120,69 +126,6 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
     Navigator.of(context).pushNamed(RouteNames.ENTRIES_SCREEN, arguments: book);
   }
 
-  void _addBookShowModalBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext ctx) {
-          return Column(
-            children: [
-              const CustomSizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      child: const Icon(Icons.close, size: 25.0),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    const CustomSizedBox(height: 0, width: 20),
-                    const Heading('Add New Book'),
-                  ],
-                ),
-              ),
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const CustomSizedBox(),
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.book),
-                        label: Text('Enter book name'),
-                      ),
-                      controller: _bookController,
-                      onSubmitted: (value) {
-                        Navigator.of(context).pop();
-                        _addBook();
-                      },
-                      maxLength: 25,
-                      maxLines: 1,
-                    ),
-                    const CustomSizedBox(),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        _addBook();
-                      },
-                      child: const Text(
-                        'ADD',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        });
-  }
-
   void _deleteBook(int index) async {
     var documentId = _bookList[index].id;
     FirebaseFirestore.instance.collection(FirestoreConstants.GETUSERBOOKS()).doc(documentId).delete();
@@ -230,8 +173,14 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
               itemCount: _bookList.length,
             ),
       floatingActionButton: CustomFloatingButton(
-        label: 'Add Book',
-        callback: () => _addBookShowModalBottomSheet(context),
+        label: 'Add New',
+        bottomSheet: BottomSheetValues(
+          context: context,
+          callback: _addBook,
+          controller: _bookController,
+          heading: 'Add New',
+          hint: 'Enter book name',
+        ),
       ),
     );
   }
