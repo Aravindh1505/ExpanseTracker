@@ -63,10 +63,35 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Paragraph('Suggested PayMode'),
+            const Paragraph('Your added PayModes'),
             const CustomSizedBox(),
+            Consumer<PayModeProvider>(
+              builder: (ctx, paymode, child) => ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (ctx, index) {
+                  return Card(
+                    elevation: 2.0,
+                    margin: const EdgeInsets.all(5.0),
+                    child: RadioButton(
+                      description: paymode.userPayModeList[index].payName,
+                      value: paymode.userPayModeList[index].payName,
+                      groupValue: _selectedPayMode,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedPayMode = value!;
+                          _payModeProvider.userSelectedPayMode(value);
+                        });
+                      },
+                    ),
+                  );
+                },
+                itemCount: paymode.userPayModeList.length,
+              ),
+            ),
+            const CustomSizedBox(),
+            const Paragraph('Suggested PayModes'),
             SizedBox(
-              height: 500,
+              height: 300,
               width: double.infinity,
               child: Consumer<PayModeProvider>(
                 builder: (ctx, paymode, child) => ListView.builder(
@@ -75,8 +100,8 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
                       elevation: 2.0,
                       margin: const EdgeInsets.all(5.0),
                       child: RadioButton(
-                        description: paymode.list[index].payName,
-                        value: paymode.list[index].payName,
+                        description: paymode.suggestedPayModeList[index].payName,
+                        value: paymode.suggestedPayModeList[index].payName,
                         groupValue: _selectedPayMode,
                         onChanged: (value) {
                           setState(() {
@@ -87,7 +112,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
                       ),
                     );
                   },
-                  itemCount: paymode.list.length,
+                  itemCount: paymode.suggestedPayModeList.length,
                 ),
               ),
             ),

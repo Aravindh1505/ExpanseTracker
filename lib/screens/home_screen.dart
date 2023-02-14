@@ -35,13 +35,23 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
   @override
   void initState() {
     _getBooks();
-
-    Provider.of<PayModeProvider>(context, listen: false).fetchPayModes();
-    var categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
-    categoriesProvider.fetchCategories();
-    categoriesProvider.fetchUserCategories();
-
+    getData();
     super.initState();
+  }
+
+  void getData() {
+    var payModeProvider = Provider.of<PayModeProvider>(context, listen: false);
+    var categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+
+    if (categoriesProvider.list.isEmpty) {
+      categoriesProvider.getCategories();
+      categoriesProvider.getUserCategories();
+    }
+
+    if (payModeProvider.list.isEmpty) {
+      payModeProvider.getPayModes();
+      payModeProvider.getUserPayModes();
+    }
   }
 
   Future<void> _logout(BuildContext context) async {

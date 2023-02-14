@@ -6,4 +6,7 @@ class Constants {
   static const TITLE_CATEGORY = 'Choose Category';
   static const TITLE_PAYMENT_MODE = 'Choose Payment Mode';
 
+
+  static const DEFAULT = 'default';
+  static const USER = 'user';
 }

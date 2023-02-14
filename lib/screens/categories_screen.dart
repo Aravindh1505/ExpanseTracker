@@ -59,20 +59,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> with BaseScreen {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Paragraph('Suggested Categories'),
+            const Paragraph('Your added Categories'),
             const CustomSizedBox(),
             SizedBox(
-              height: 500,
+              height: 300,
               width: double.infinity,
               child: Consumer<CategoriesProvider>(
                 builder: (ctx, categories, child) => ListView.builder(
+                  shrinkWrap: true,
                   itemBuilder: (ctx, index) {
                     return Card(
                       elevation: 2.0,
                       margin: const EdgeInsets.all(5.0),
                       child: RadioButton(
-                        description: categories.list[index].categoryName,
-                        value: categories.list[index].categoryName,
+                        description: categories.userCategories[index].categoryName,
+                        value: categories.userCategories[index].categoryName,
                         groupValue: _selectedCategory,
                         onChanged: (value) {
                           setState(() {
@@ -83,7 +84,35 @@ class _CategoriesScreenState extends State<CategoriesScreen> with BaseScreen {
                       ),
                     );
                   },
-                  itemCount: categories.list.length,
+                  itemCount: categories.userCategories.length,
+                ),
+              ),
+            ),
+            const CustomSizedBox(),
+            const Paragraph('Suggested Categories'),
+            SizedBox(
+              height: 300,
+              width: double.infinity,
+              child: Consumer<CategoriesProvider>(
+                builder: (ctx, categories, child) => ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return Card(
+                      elevation: 2.0,
+                      margin: const EdgeInsets.all(5.0),
+                      child: RadioButton(
+                        description: categories.suggestedCategories[index].categoryName,
+                        value: categories.suggestedCategories[index].categoryName,
+                        groupValue: _selectedCategory,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCategory = value!;
+                            categoriesProvider.userSelectedCategory(value);
+                          });
+                        },
+                      ),
+                    );
+                  },
+                  itemCount: categories.suggestedCategories.length,
                 ),
               ),
             ),

@@ -6,6 +6,7 @@ import '../model/categories.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/utils.dart';
 import '../screens/base_screen.dart';
+import '../utils/constants.dart';
 
 class CategoriesProvider with ChangeNotifier, BaseScreen {
   final List<Categories> _categoriesList = [];
@@ -16,7 +17,15 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
 
   String get selectedCategory => _selectedCategory;
 
-  Future<void> fetchCategories() async {
+  List<Categories> get suggestedCategories {
+    return _categoriesList.where((categories) => categories.type == Constants.DEFAULT).toList();
+  }
+
+  List<Categories> get userCategories {
+    return _categoriesList.where((categories) => categories.type == Constants.USER).toList();
+  }
+
+  Future<void> getCategories() async {
     _categoriesList.clear();
     List<Categories> list = [];
 
@@ -28,6 +37,7 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
         documentId: snapshot.id,
         categoryId: snapshot.data()['category_id'],
         categoryName: snapshot.data()['category_name'],
+        type: Constants.DEFAULT,
         sequence: snapshot.data()['sequence'],
         isActive: true,
       );
@@ -63,6 +73,7 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
       documentId: '',
       categoryId: categoryId,
       categoryName: categoryName,
+      type: Constants.USER,
       sequence: 0,
       isActive: true,
     );
@@ -71,7 +82,7 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
     notifyListeners();
   }
 
-  Future<void> fetchUserCategories() async {
+  Future<void> getUserCategories() async {
     List<Categories> list = [];
 
     //var collection = FirebaseFirestore.instance.collection('categories').where('is_active', isEqualTo: true);
@@ -87,6 +98,7 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
         documentId: snapshot.id,
         categoryId: snapshot.data()['category_id'],
         categoryName: snapshot.data()['category_name'],
+        type: Constants.USER,
         sequence: 0,
         isActive: true,
       );
@@ -99,8 +111,8 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
 
   bool isCategoryAvailable(String categoryName) {
     bool isFound = false;
-    _categoriesList.firstWhereOrNull((element) {
-      isFound = element.categoryName.toUpperCase().trim() == categoryName.toUpperCase().trim();
+    _categoriesList.firstWhereOrNull((categories) {
+      isFound = categories.categoryName.toUpperCase().trim() == categoryName.toUpperCase().trim();
       return isFound;
     });
     return isFound;

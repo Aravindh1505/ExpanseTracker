@@ -52,15 +52,15 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
     return _entriesList;
   }
 
-  Future<void> save(Book book, String amount, String remark) async {
+  Future<void> save(Book book, String amount, String remark, String category, String payMode) async {
     Map<String, dynamic> data = {
       'userId': currentUserId,
       'bookName': book.bookName,
       'type': book.type.name,
       'amount': amount,
       'remark': remark,
-      'category': 'other',
-      'paymentMode': 'cash',
+      'category': category,
+      'paymentMode': payMode,
       'date': getCurrentDateAndTime(),
       'platform': getPlatform(),
       'createdAt': getCurrentDateAndTime(),

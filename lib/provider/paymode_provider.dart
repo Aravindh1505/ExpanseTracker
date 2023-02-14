@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../model/payment_mode.dart';
 import '../screens/base_screen.dart';
+import '../utils/constants.dart';
 import '../utils/firestore_constants.dart';
 import '../utils/utils.dart';
 
@@ -17,7 +18,15 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
 
   String get selectedPayMode => _selectedPayMode;
 
-  Future<void> fetchPayModes() async {
+  List<PaymentMode> get suggestedPayModeList {
+    return _payModeList.where((paymode) => paymode.type == Constants.DEFAULT).toList();
+  }
+
+  List<PaymentMode> get userPayModeList {
+    return _payModeList.where((paymode) => paymode.type == Constants.USER).toList();
+  }
+
+  Future<void> getPayModes() async {
     _payModeList.clear();
     List<PaymentMode> list = [];
 
@@ -33,6 +42,7 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
         documentId: snapshot.id,
         payId: snapshot.data()['pay_id'],
         payName: snapshot.data()['pay_name'],
+        type: Constants.DEFAULT,
         sequence: snapshot.data()['sequence'],
         isActive: true,
       );
@@ -49,13 +59,15 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
     final String formatted = DateFormat(pattern).format(DateTime.now());
     Utils.logger(formatted);
 
+    int id = DateTime.now().millisecondsSinceEpoch;
+
     FirebaseFirestore.instance
         .collection(FirestoreConstants.BOOKS)
         .doc(currentUserId)
         .collection(FirestoreConstants.USERPAYMENTMODES)
         .add(<String, dynamic>{
       'userId': currentUserId,
-      'pay_id': DateTime.now().millisecondsSinceEpoch,
+      'pay_id': id,
       'pay_name': name,
       'sequence': 0,
       'is_active': true,
@@ -63,9 +75,21 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
       'platform': getPlatform(),
       'createdAt': DateTime.now().toString(),
     });
+
+    var paymentMode = PaymentMode(
+      documentId: '',
+      payId: id,
+      payName: name,
+      type: Constants.DEFAULT,
+      sequence: 0,
+      isActive: true,
+    );
+
+    _payModeList.add(paymentMode);
+    notifyListeners();
   }
 
-  Future<void> fetchUserPayModes() async {
+  Future<void> getUserPayModes() async {
     List<PaymentMode> list = [];
 
     var collection = FirebaseFirestore.instance
@@ -78,8 +102,9 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
     for (var snapshot in querySnapshots.docs) {
       PaymentMode categories = PaymentMode(
         documentId: snapshot.id,
-        payId: snapshot.data()['category_id'],
-        payName: snapshot.data()['category_name'],
+        payId: snapshot.data()['pay_id'],
+        payName: snapshot.data()['pay_name'],
+        type: Constants.USER,
         sequence: 0,
         isActive: true,
       );
@@ -91,8 +116,8 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
 
   bool isPayModeAvailable(String payMode) {
     bool isFound = false;
-    _payModeList.firstWhereOrNull((element) {
-      isFound = element.payName.toUpperCase().trim() == payMode.toUpperCase().trim();
+    _payModeList.firstWhereOrNull((paymode) {
+      isFound = paymode.payName.toUpperCase().trim() == payMode.toUpperCase().trim();
       return isFound;
     });
     return isFound;

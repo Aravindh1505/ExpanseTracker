@@ -21,14 +21,15 @@ class EntriesFormScreen extends StatefulWidget {
 class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
   late TextEditingController _amountController;
   late TextEditingController _remarkController;
-
-  String _myActivity = '';
+  late TextEditingController _categoryController;
+  late TextEditingController _payModeController;
 
   @override
   void initState() {
     _amountController = TextEditingController();
     _remarkController = TextEditingController();
-
+    _categoryController = TextEditingController();
+    _payModeController = TextEditingController();
     super.initState();
   }
 
@@ -36,15 +37,19 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
   void dispose() {
     _amountController.dispose();
     _remarkController.dispose();
+    _categoryController.dispose();
+    _payModeController.dispose();
     super.dispose();
   }
 
   void _save(Book book, BuildContext context) async {
     var amount = _amountController.text.toString();
     var remark = _remarkController.text.toString();
+    var category = _categoryController.text.toString();
+    var payMode = _payModeController.text.toString();
 
     var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
-    entriesProvider.save(book, amount, remark);
+    entriesProvider.save(book, amount, remark, category, payMode);
     Navigator.of(context).pop();
   }
 
@@ -61,7 +66,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
         margin: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: Column(
           children: [
-            const CustomSizedBox(height: 20),
+            const CustomSizedBox(),
             TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -84,8 +89,9 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
               maxLength: 25,
             ),
             const CustomSizedBox(),
-            Consumer<CategoriesProvider>(
-              builder: (ctx, category, child) => TextField(
+            Consumer<CategoriesProvider>(builder: (ctx, category, child) {
+              _categoryController.text = category.selectedCategory;
+              return TextField(
                 enabled: true,
                 readOnly: true,
                 showCursor: false,
@@ -96,30 +102,33 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                   prefixIcon: Icon(Icons.category),
                   label: Text('Category'),
                 ),
-                controller: TextEditingController(text: category.selectedCategory),
+                controller: _categoryController,
                 onTap: () {
                   Navigator.of(context).pushNamed(RouteNames.CATEGORIES_SCREEN);
                 },
-              ),
-            ),
-            const CustomSizedBox(height: 35),
+              );
+            }),
+            const CustomSizedBox(height: 40),
             Consumer<PayModeProvider>(
-              builder: (ctx, paymode, child) => TextField(
-                enabled: true,
-                readOnly: true,
-                showCursor: false,
-                autofocus: false,
-                enableInteractiveSelection: false,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.payment),
-                  label: Text('PayMode'),
-                ),
-                controller: TextEditingController(text: paymode.selectedPayMode),
-                onTap: () {
-                  Navigator.of(context).pushNamed(RouteNames.PAYMENT_MODE_SCREEN);
-                },
-              ),
+              builder: (ctx, paymode, child) {
+                _payModeController.text = paymode.selectedPayMode;
+                return TextField(
+                  enabled: true,
+                  readOnly: true,
+                  showCursor: false,
+                  autofocus: false,
+                  enableInteractiveSelection: false,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.payment),
+                    label: Text('PayMode'),
+                  ),
+                  controller: _payModeController,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(RouteNames.PAYMENT_MODE_SCREEN);
+                  },
+                );
+              },
             ),
             Expanded(
               child: Align(
