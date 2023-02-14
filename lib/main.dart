@@ -10,7 +10,7 @@ import '../screens/login_screen.dart';
 import '../screens/otp_verification.dart';
 import '../screens/payment_mode_screen.dart';
 
-import '../utils/custom_theme.dart';
+import '../theme/custom_theme.dart';
 import '../utils/route_names.dart';
 
 import '../provider/entries_provider.dart';

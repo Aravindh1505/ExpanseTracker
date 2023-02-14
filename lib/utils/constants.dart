@@ -7,6 +7,6 @@ class Constants {
   static const TITLE_PAYMENT_MODE = 'Choose Payment Mode';
 
 
-  static const DEFAULT = 'default';
-  static const USER = 'user';
+  static const DEFAULT = 'DEFAULT'; // Default values for categories and pay modes
+  static const USER = 'USER'; // User added values for categories and modes
 }
