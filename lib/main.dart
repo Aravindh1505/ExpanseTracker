@@ -16,6 +16,7 @@ import '../utils/route_names.dart';
 import '../provider/entries_provider.dart';
 import '../provider/categories_provider.dart';
 import '../provider/paymode_provider.dart';
+import '../provider/books_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<EntriesProvider>(create: (_) => EntriesProvider()),
         ChangeNotifierProvider<CategoriesProvider>(create: (_) => CategoriesProvider()),
         ChangeNotifierProvider<PayModeProvider>(create: (_) => PayModeProvider()),
+        ChangeNotifierProvider<BooksProvider>(create: (_) => BooksProvider()),
       ],
       child: MaterialApp(
         theme: CustomTheme.lightTheme,
