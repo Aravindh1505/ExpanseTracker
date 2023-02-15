@@ -30,6 +30,13 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     _remarkController = TextEditingController();
     _categoryController = TextEditingController();
     _payModeController = TextEditingController();
+
+    CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+    PayModeProvider payModeProvider = Provider.of<PayModeProvider>(context, listen: false);
+
+    categoriesProvider.userSelectedCategory('');
+    payModeProvider.userSelectedPayMode('');
+
     super.initState();
   }
 
@@ -49,27 +56,17 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     var payMode = _payModeController.text.toString();
 
     if (amount.isEmpty) {
-      showToast('Amount should not be empty');
+      showToast('Please enter amount');
       return;
     }
 
     if (remark.isEmpty) {
-      showToast('Remark should not be empty');
-      return;
-    }
-
-    if (category.isEmpty) {
-      showToast('Category should not be empty');
-      return;
-    }
-
-    if (payMode.isEmpty) {
-      showToast('Paymode should not be empty');
+      showToast('Please enter remark');
       return;
     }
 
     var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
-    entriesProvider.save(book, amount, remark, category, payMode);
+    entriesProvider.save(book, amount, remark, category, payMode, '');
     Navigator.of(context).pop();
   }
 
@@ -90,7 +87,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.money),
-                  label: Text('Enter amount'),
+                  label: Text('Amount'),
                 ),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
@@ -101,7 +98,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.note_alt),
-                  label: Text('Enter remark'),
+                  label: Text('Remark'),
                 ),
                 controller: _remarkController,
                 keyboardType: TextInputType.text,

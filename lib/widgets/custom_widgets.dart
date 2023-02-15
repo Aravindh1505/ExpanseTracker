@@ -25,16 +25,18 @@ class CustomSizedBox extends StatelessWidget {
   }
 }
 
-class Heading extends StatelessWidget {
+class HeadingText extends StatelessWidget {
   final String? text;
+  final Color textColor;
 
-  const Heading(this.text, {super.key});
+  const HeadingText(this.text, {super.key, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text!,
-      style: const TextStyle(
+      style: TextStyle(
+        color: textColor,
         fontSize: 20.0,
         fontWeight: FontWeight.w700,
       ),
@@ -42,16 +44,18 @@ class Heading extends StatelessWidget {
   }
 }
 
-class TitleMedium extends StatelessWidget {
+class TitleText extends StatelessWidget {
   final String? text;
+  final Color textColor;
 
-  const TitleMedium(this.text, {super.key});
+  const TitleText(this.text, {super.key, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text!,
-      style: const TextStyle(
+      style: TextStyle(
+        color: textColor,
         fontSize: 16.0,
         fontWeight: FontWeight.w500,
       ),
@@ -59,12 +63,33 @@ class TitleMedium extends StatelessWidget {
   }
 }
 
-class Paragraph extends StatelessWidget {
+class ParagraphText extends StatelessWidget {
+  final String? text;
+  final TextAlign textAlign;
+  final Color textColor;
+
+  const ParagraphText(this.text, {super.key, this.textAlign = TextAlign.start, this.textColor = Colors.black});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text.toString(),
+      style: TextStyle(
+        color: textColor,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w300,
+      ),
+      textAlign: textAlign,
+    );
+  }
+}
+
+class LabelText extends StatelessWidget {
   final String text;
   final TextAlign textAlign;
   final Color textColor;
 
-  const Paragraph(this.text, {this.textAlign = TextAlign.start, this.textColor = Colors.black});
+  const LabelText(this.text, {super.key, this.textAlign = TextAlign.start, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +97,8 @@ class Paragraph extends StatelessWidget {
       text,
       style: TextStyle(
         color: textColor,
-        fontSize: 16.0,
-        fontWeight: FontWeight.w500,
+        fontSize: 12.0,
+        fontWeight: FontWeight.w200,
       ),
       textAlign: textAlign,
     );
@@ -98,7 +123,7 @@ void customBottomSheet(BottomSheetValues bottomSheet) {
                     },
                   ),
                   const CustomSizedBox(height: 0, width: 20),
-                  Heading(bottomSheet.heading),
+                  HeadingText(bottomSheet.heading),
                 ],
               ),
             ),

@@ -26,6 +26,7 @@ class _EntriesScreenState extends State<EntriesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Book book = ModalRoute.of(context)?.settings.arguments as Book;
       var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
+      entriesProvider.resetExpense();
       entriesProvider.fetchEntries(book);
     });
     super.initState();
@@ -47,19 +48,39 @@ class _EntriesScreenState extends State<EntriesScreen> {
     return Scaffold(
       appBar: CustomAppBar(context: context, title: book.bookName),
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 600,
-              width: double.infinity,
-              child: Consumer<EntriesProvider>(
-                builder: (ctx, entries, child) =>
-                    entries.isLoading ? const CustomProgress() : EntriesItem(entries.list),
-              ),
+        child: Container(
+          margin: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(2.0),
+          child: Consumer<EntriesProvider>(
+            builder: (ctx, entries, child) => Column(
+              children: [
+                buildTopSection('Total in (+)', entries.expense?.cashIn.toString()),
+                buildTopSection('Total out (-)', entries.expense?.cashOut.toString()),
+                buildTopSection('Net Balance', entries.expense?.total.toString()),
+                SizedBox(
+                  height: 450,
+                  width: double.infinity,
+                  child: entries.isLoading ? const CustomProgress() : EntriesItem(entries.list),
+                ),
+                EntriesBottomButton(cashInAndOut, book),
+              ],
             ),
-            EntriesBottomButton(cashInAndOut, book),
-          ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget buildTopSection(String title, String? amount) {
+    return Container(
+      margin: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(2.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TitleText(title),
+          ParagraphText(amount ?? '0'),
+        ],
       ),
     );
   }

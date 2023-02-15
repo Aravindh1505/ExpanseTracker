@@ -11,10 +11,12 @@ class BookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Heading(bookName),
+    return SizedBox(
+      height: 70,
+      child: Card(
+        elevation: 2.0,
+        child: ListTile(
+          title: HeadingText(bookName),
           leading: const Icon(Icons.book),
           style: ListTileStyle.list,
           onTap: clickAction,
@@ -26,8 +28,7 @@ class BookItem extends StatelessWidget {
             ),
           ),
         ),
-        const Divider()
-      ],
+      ),
     );
   }
 }

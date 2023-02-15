@@ -1,5 +1,6 @@
 class Entries {
   final String id;
+  final String bookId;
   final String type;
   final String bookName;
   final String amount;
@@ -11,6 +12,7 @@ class Entries {
 
   Entries({
     required this.id,
+    required this.bookId,
     required this.type,
     required this.bookName,
     required this.amount,

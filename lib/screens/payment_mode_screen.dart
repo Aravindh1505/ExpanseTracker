@@ -53,7 +53,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(context: context, title: Constants.TITLE_PAYMENT_MODE),
+      appBar: CustomAppBar(context: context, title: Constants.TITLE_PAYMENT_MODE),
       body: Container(
         margin: const EdgeInsets.all(5.0),
         padding: const EdgeInsets.all(5.0),
@@ -61,7 +61,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Paragraph('Your added PayModes'),
+            const ParagraphText('Your added PayModes'),
             const CustomSizedBox(),
             Consumer<PayModeProvider>(
               builder: (ctx, paymode, child) => ListView.builder(
@@ -78,6 +78,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
                         setState(() {
                           _selectedPayMode = value!;
                           _payModeProvider.userSelectedPayMode(value);
+                          pop(context);
                         });
                       },
                     ),
@@ -87,7 +88,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
               ),
             ),
             const CustomSizedBox(),
-            const Paragraph('Suggested PayModes'),
+            const ParagraphText('Suggested PayModes'),
             SizedBox(
               height: 300,
               width: double.infinity,
@@ -105,6 +106,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
                           setState(() {
                             _selectedPayMode = value!;
                             _payModeProvider.userSelectedPayMode(value);
+                            pop(context);
                           });
                         },
                       ),

@@ -1,3 +1,5 @@
+import 'package:expanse_tracker/model/cash_type.dart';
+import 'package:expanse_tracker/model/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,6 +12,7 @@ import '../utils/utils.dart';
 class EntriesProvider with ChangeNotifier, BaseScreen {
   final List<Entries> _entriesList = [];
   bool _isLoading = true;
+  Expense? _expense;
 
   //UnmodifiableListView<Entries> get list => UnmodifiableListView(_entriesList);
 
@@ -19,15 +22,18 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
 
   bool get isLoading => _isLoading;
 
+  Expense? get expense => _expense;
+
   Future<List<Entries>> fetchEntries(Book book) async {
     _entriesList.clear();
     _isLoading = true;
+    notifyListeners();
 
     var collection = FirebaseFirestore.instance
+        .collection(FirestoreConstants.BOOKS)
+        .doc(currentUserId)
         .collection(FirestoreConstants.USERENTRIES)
-        .doc(book.id)
-        .collection(book.bookName)
-        .orderBy('createdAt', descending: true);
+        .where('bookId', isEqualTo: book.id);
 
     var querySnapshots = await collection.get();
 
@@ -35,6 +41,7 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
       Entries entries = Entries(
         id: snapshots.id,
         type: snapshots.data()['type'],
+        bookId: snapshots.data()['bookId'],
         bookName: snapshots.data()['bookName'],
         amount: snapshots.data()['amount'],
         remark: snapshots.data()['remark'],
@@ -48,32 +55,76 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
 
     _isLoading = false;
     Utils.logger('entries length : ${_entriesList.length}');
+
+    processExpense();
     notifyListeners();
     return _entriesList;
   }
 
-  Future<void> save(Book book, String amount, String remark, String category, String payMode) async {
+  Future<void> save(
+      Book book, String amount, String remark, String category, String payMode, String selectedDate) async {
+    var date = getCurrentDateAndTime();
+
     Map<String, dynamic> data = {
       'userId': currentUserId,
+      'bookId': book.id,
       'bookName': book.bookName,
       'type': book.type.name,
       'amount': amount,
       'remark': remark,
       'category': category,
       'paymentMode': payMode,
-      'date': getCurrentDateAndTime(),
+      'date': date,
       'platform': getPlatform(),
-      'createdAt': getCurrentDateAndTime(),
+      'createdAt': date,
     };
 
     FirebaseFirestore.instance
+        .collection(FirestoreConstants.BOOKS)
+        .doc(currentUserId)
         .collection(FirestoreConstants.USERENTRIES)
-        .doc(book.id)
-        .collection(book.bookName)
-        .doc()
-        .set(data);
+        .add(data);
 
-    _entriesList.clear();
-    fetchEntries(book);
+    Entries entries = Entries(
+      id: '',
+      bookId: book.id,
+      type: book.type.name,
+      bookName: book.bookName,
+      amount: amount,
+      remark: remark,
+      category: category,
+      paymentMode: payMode,
+      date: date,
+      createdAt: date,
+    );
+    _entriesList.add(entries);
+    processExpense();
+    //fetchEntries(book);
+    notifyListeners();
+  }
+
+  void processExpense() {
+    int cashIn = 0;
+    int cashOut = 0;
+    int total = 0;
+
+    for (var entries in _entriesList) {
+      if (entries.type == CashType.CASH_IN.name) {
+        cashIn = cashIn + int.parse(entries.amount);
+      }
+      if (entries.type == CashType.CASH_OUT.name) {
+        cashOut = cashOut + int.parse(entries.amount);
+      }
+
+      total = cashIn - cashOut;
+
+      _expense = Expense(cashIn: cashIn, cashOut: cashOut, total: total);
+    }
+
+    Utils.logger('cashIn $cashIn | cashOut $cashOut');
+  }
+
+  void resetExpense() {
+    _expense = Expense(cashIn: 0, cashOut: 0, total: 0);
   }
 }

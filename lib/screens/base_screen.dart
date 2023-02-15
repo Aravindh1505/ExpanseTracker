@@ -14,8 +14,8 @@ class BaseScreen {
 
   String getCurrentDateAndTime() => DateTime.now().toString();
 
-  String getFormattedDate(String date) {
-    DateTime tempDate = DateFormat(pattern).parse(date);
+  String getFormattedDate(String? date) {
+    DateTime tempDate = DateFormat(pattern).parse(date!);
     return DateFormat.yMMMMd().format(tempDate);
   }
 
@@ -31,9 +31,9 @@ class BaseScreen {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.black54,
       textColor: Colors.white,
       fontSize: 16.0,
     );
@@ -47,5 +47,9 @@ class BaseScreen {
       ),
       (route) => false,
     );
+  }
+
+  void pop(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

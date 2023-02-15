@@ -39,38 +39,44 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: const Text(Constants.TITLE_LOGIN),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Image.asset(
-              'assets/images/smartphone.png',
-              fit: BoxFit.cover,
-              width: 100,
-              height: 100,
-            ),
-            const CustomSizedBox(),
-            const Heading('Verification'),
-            const CustomSizedBox(),
-            const Paragraph('We will send you a One Time Password on your phone number'),
-            const CustomSizedBox(),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.phone_android),
-                label: Text('Enter mobile number'),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/smartphone.png',
+                fit: BoxFit.cover,
+                width: 100,
+                height: 100,
               ),
-              controller: _controller,
-              onSubmitted: (value) => _submit(),
-              keyboardType: TextInputType.phone,
-              maxLength: 10,
-            ),
-            const CustomSizedBox(),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text('Get OTP'),
-            ),
-          ],
+              const CustomSizedBox(),
+              const HeadingText('Verification'),
+              const CustomSizedBox(),
+              const ParagraphText(
+                'We will send you a One Time Password on your phone number',
+                textAlign: TextAlign.center,
+              ),
+              const CustomSizedBox(height: 50),
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone_android),
+                  label: Text('Enter mobile number'),
+                ),
+                controller: _controller,
+                onSubmitted: (value) => _submit(),
+                keyboardType: TextInputType.phone,
+                maxLength: 10,
+              ),
+              const CustomSizedBox(),
+              ElevatedButton(
+                onPressed: _submit,
+                child: const Text('Get OTP'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -68,36 +68,38 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
       appBar: AppBar(
         title: Text('OTP Verification'),
       ),
-      body: Column(
-        children: [
-          Image.asset(
-            'assets/images/smartphone.png',
-            fit: BoxFit.cover,
-            width: 100,
-            height: 100,
-          ),
-          const CustomSizedBox(),
-          Heading('Verify +91-${widget.phone}'),
-          const CustomSizedBox(),
-          const Paragraph('You will get OTP via SMS'),
-          const CustomSizedBox(),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Pinput(
-              length: 6,
-              defaultPinTheme: defaultPinTheme,
-              controller: _pinPutController,
-              pinAnimationType: PinAnimationType.fade,
-              onSubmitted: (pin) async {
-                _verifyOTP();
-              },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/images/smartphone.png',
+              fit: BoxFit.cover,
+              width: 100,
+              height: 100,
             ),
-          ),
-          ElevatedButton(
-            onPressed: _verifyOTP,
-            child: const Text('Verify OTP'),
-          ),
-        ],
+            const CustomSizedBox(),
+            HeadingText('Verify +91-${widget.phone}'),
+            const CustomSizedBox(),
+            const ParagraphText('You will get OTP via SMS'),
+            const CustomSizedBox(),
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Pinput(
+                length: 6,
+                defaultPinTheme: defaultPinTheme,
+                controller: _pinPutController,
+                pinAnimationType: PinAnimationType.fade,
+                onSubmitted: (pin) async {
+                  _verifyOTP();
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _verifyOTP,
+              child: const Text('Verify OTP'),
+            ),
+          ],
+        ),
       ),
     );
   }

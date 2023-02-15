@@ -18,11 +18,11 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
   String get selectedCategory => _selectedCategory;
 
   List<Categories> get suggestedCategories {
-    return _categoriesList.where((categories) => categories.type == Constants.DEFAULT).toList();
+    return _categoriesList.where((categories) => categories.type == Constants.DEFAULT).toList().reversed.toList();
   }
 
   List<Categories> get userCategories {
-    return _categoriesList.where((categories) => categories.type == Constants.USER).toList();
+    return _categoriesList.where((categories) => categories.type == Constants.USER).toList().reversed.toList();
   }
 
   Future<void> getCategories() async {
@@ -66,7 +66,7 @@ class CategoriesProvider with ChangeNotifier, BaseScreen {
       'sequence': 0,
       'is_active': true,
       'platform': getPlatform(),
-      'createdAt': DateTime.now().toString(),
+      'timestamp': DateTime.now().toString(),
     });
 
     var category = Categories(

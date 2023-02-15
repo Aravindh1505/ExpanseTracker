@@ -50,71 +50,76 @@ class _CategoriesScreenState extends State<CategoriesScreen> with BaseScreen {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(context: context, title: Constants.TITLE_CATEGORY),
-      body: Container(
-        margin: const EdgeInsets.all(5.0),
-        padding: const EdgeInsets.all(5.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Paragraph('Your added Categories'),
-            const CustomSizedBox(),
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: Consumer<CategoriesProvider>(
-                builder: (ctx, categories, child) => ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, index) {
-                    return Card(
-                      elevation: 2.0,
-                      margin: const EdgeInsets.all(5.0),
-                      child: RadioButton(
-                        description: categories.userCategories[index].categoryName,
-                        value: categories.userCategories[index].categoryName,
-                        groupValue: _selectedCategory,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCategory = value!;
-                            categoriesProvider.userSelectedCategory(value);
-                          });
-                        },
-                      ),
-                    );
-                  },
-                  itemCount: categories.userCategories.length,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const ParagraphText('Your added Categories'),
+              const CustomSizedBox(),
+              SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: Consumer<CategoriesProvider>(
+                  builder: (ctx, categories, child) => ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (ctx, index) {
+                      return Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.all(5.0),
+                        child: RadioButton(
+                          description: categories.userCategories[index].categoryName,
+                          value: categories.userCategories[index].categoryName,
+                          groupValue: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value!;
+                              categoriesProvider.userSelectedCategory(value);
+                              pop(context);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                    itemCount: categories.userCategories.length,
+                  ),
                 ),
               ),
-            ),
-            const CustomSizedBox(),
-            const Paragraph('Suggested Categories'),
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: Consumer<CategoriesProvider>(
-                builder: (ctx, categories, child) => ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return Card(
-                      elevation: 2.0,
-                      margin: const EdgeInsets.all(5.0),
-                      child: RadioButton(
-                        description: categories.suggestedCategories[index].categoryName,
-                        value: categories.suggestedCategories[index].categoryName,
-                        groupValue: _selectedCategory,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCategory = value!;
-                            categoriesProvider.userSelectedCategory(value);
-                          });
-                        },
-                      ),
-                    );
-                  },
-                  itemCount: categories.suggestedCategories.length,
+              const CustomSizedBox(),
+              const ParagraphText('Suggested Categories'),
+              SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: Consumer<CategoriesProvider>(
+                  builder: (ctx, categories, child) => ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (ctx, index) {
+                      return Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.all(5.0),
+                        child: RadioButton(
+                          description: categories.suggestedCategories[index].categoryName,
+                          value: categories.suggestedCategories[index].categoryName,
+                          groupValue: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value!;
+                              categoriesProvider.userSelectedCategory(value);
+                              pop(context);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                    itemCount: categories.suggestedCategories.length,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: CustomFloatingButton(

@@ -60,6 +60,18 @@ class BooksProvider extends ChangeNotifier with BaseScreen {
     var documentId = _bookList[index].id;
     FirebaseFirestore.instance.collection(FirestoreConstants.GETUSERBOOKS()).doc(documentId).delete();
 
+    var query = FirebaseFirestore.instance
+        .collection(FirestoreConstants.BOOKS)
+        .doc(currentUserId)
+        .collection(FirestoreConstants.USERENTRIES)
+        .where('bookId', isEqualTo: documentId);
+
+    query.get().then((querySnapshot) {
+      for (var snapshot in querySnapshot.docs) {
+        snapshot.reference.delete();
+      }
+    });
+
     _bookList.removeAt(index);
     notifyListeners();
   }
