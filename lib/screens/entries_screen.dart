@@ -22,6 +22,12 @@ class EntriesScreen extends StatefulWidget {
 class _EntriesScreenState extends State<EntriesScreen> {
   @override
   void initState() {
+    Utils.logger('initState triggered...');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Book book = ModalRoute.of(context)?.settings.arguments as Book;
+      var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
+      entriesProvider.fetchEntries(book);
+    });
     super.initState();
   }
 
@@ -36,36 +42,24 @@ class _EntriesScreenState extends State<EntriesScreen> {
   @override
   Widget build(BuildContext context) {
     Utils.logger('Entries screen rebuild...');
-
     Book book = ModalRoute.of(context)?.settings.arguments as Book;
-    var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
-    Future<List<Entries>>? fetchEntries;
-
-    if (entriesProvider.list.isEmpty) {
-      entriesProvider.fetchEntries(book);
-    }
 
     return Scaffold(
       appBar: CustomAppBar(context: context, title: book.bookName),
-      body: FutureBuilder<List<Entries>>(
-        future: fetchEntries,
-        builder: (context, snapshot) {
-          return SafeArea(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 600,
-                  width: double.infinity,
-                  child: Consumer<EntriesProvider>(
-                    builder: (ctx, entries, child) =>
-                        entries.isLoading ? const CustomProgress() : EntriesItem(snapshot.data),
-                  ),
-                ),
-                EntriesBottomButton(cashInAndOut, book),
-              ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 600,
+              width: double.infinity,
+              child: Consumer<EntriesProvider>(
+                builder: (ctx, entries, child) =>
+                    entries.isLoading ? const CustomProgress() : EntriesItem(entries.list),
+              ),
             ),
-          );
-        },
+            EntriesBottomButton(cashInAndOut, book),
+          ],
+        ),
       ),
     );
   }

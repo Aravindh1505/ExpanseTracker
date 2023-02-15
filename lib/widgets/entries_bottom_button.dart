@@ -21,6 +21,7 @@ class EntriesBottomButton extends StatelessWidget {
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
                 fixedSize: const Size(150, 30),
               ),
               onPressed: () => cashInAndOut(context, CashType.CASH_IN, book),
@@ -30,7 +31,9 @@ class EntriesBottomButton extends StatelessWidget {
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
                 fixedSize: const Size(150, 30),
+                textStyle: Theme.of(context).textTheme.titleSmall,
               ),
               onPressed: () => cashInAndOut(context, CashType.CASH_OUT, book),
               icon: const Icon(Icons.remove),

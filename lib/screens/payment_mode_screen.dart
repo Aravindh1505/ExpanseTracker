@@ -53,9 +53,7 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(Constants.TITLE_PAYMENT_MODE),
-      ),
+        appBar: CustomAppBar(context: context, title: Constants.TITLE_PAYMENT_MODE),
       body: Container(
         margin: const EdgeInsets.all(5.0),
         padding: const EdgeInsets.all(5.0),

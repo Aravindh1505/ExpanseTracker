@@ -49,9 +49,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> with BaseScreen {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(Constants.TITLE_CATEGORY),
-      ),
+      appBar: CustomAppBar(context: context, title: Constants.TITLE_CATEGORY),
       body: Container(
         margin: const EdgeInsets.all(5.0),
         padding: const EdgeInsets.all(5.0),

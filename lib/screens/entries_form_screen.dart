@@ -48,6 +48,26 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     var category = _categoryController.text.toString();
     var payMode = _payModeController.text.toString();
 
+    if (amount.isEmpty) {
+      showToast('Amount should not be empty');
+      return;
+    }
+
+    if (remark.isEmpty) {
+      showToast('Remark should not be empty');
+      return;
+    }
+
+    if (category.isEmpty) {
+      showToast('Category should not be empty');
+      return;
+    }
+
+    if (payMode.isEmpty) {
+      showToast('Paymode should not be empty');
+      return;
+    }
+
     var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
     entriesProvider.save(book, amount, remark, category, payMode);
     Navigator.of(context).pop();
@@ -59,59 +79,37 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     Book book = ModalRoute.of(context)?.settings.arguments as Book;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(book.type == CashType.CASH_IN ? 'Cash in' : 'Cash out'),
-      ),
-      body: Container(
-        margin: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Column(
-          children: [
-            const CustomSizedBox(),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.money),
-                label: Text('Enter amount'),
-              ),
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              maxLength: 10,
-            ),
-            const CustomSizedBox(),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.note_alt),
-                label: Text('Enter remark'),
-              ),
-              controller: _remarkController,
-              keyboardType: TextInputType.text,
-              maxLength: 25,
-            ),
-            const CustomSizedBox(),
-            Consumer<CategoriesProvider>(builder: (ctx, category, child) {
-              _categoryController.text = category.selectedCategory;
-              return TextField(
-                enabled: true,
-                readOnly: true,
-                showCursor: false,
-                autofocus: false,
-                enableInteractiveSelection: false,
+      appBar: CustomAppBar(context: context, title: book.type == CashType.CASH_IN ? 'Cash in' : 'Cash out'),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Column(
+            children: [
+              const CustomSizedBox(),
+              TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.category),
-                  label: Text('Category'),
+                  prefixIcon: Icon(Icons.money),
+                  label: Text('Enter amount'),
                 ),
-                controller: _categoryController,
-                onTap: () {
-                  Navigator.of(context).pushNamed(RouteNames.CATEGORIES_SCREEN);
-                },
-              );
-            }),
-            const CustomSizedBox(height: 40),
-            Consumer<PayModeProvider>(
-              builder: (ctx, paymode, child) {
-                _payModeController.text = paymode.selectedPayMode;
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+              ),
+              const CustomSizedBox(),
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.note_alt),
+                  label: Text('Enter remark'),
+                ),
+                controller: _remarkController,
+                keyboardType: TextInputType.text,
+                maxLength: 25,
+              ),
+              const CustomSizedBox(),
+              Consumer<CategoriesProvider>(builder: (ctx, category, child) {
+                _categoryController.text = category.selectedCategory;
                 return TextField(
                   enabled: true,
                   readOnly: true,
@@ -120,36 +118,44 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                   enableInteractiveSelection: false,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.payment),
-                    label: Text('PayMode'),
+                    prefixIcon: Icon(Icons.category),
+                    label: Text('Category'),
                   ),
-                  controller: _payModeController,
+                  controller: _categoryController,
                   onTap: () {
-                    Navigator.of(context).pushNamed(RouteNames.PAYMENT_MODE_SCREEN);
+                    Navigator.of(context).pushNamed(RouteNames.CATEGORIES_SCREEN);
                   },
                 );
-              },
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('SAVE & ADD NEW'),
+              }),
+              const CustomSizedBox(height: 40),
+              Consumer<PayModeProvider>(
+                builder: (ctx, paymode, child) {
+                  _payModeController.text = paymode.selectedPayMode;
+                  return TextField(
+                    enabled: true,
+                    readOnly: true,
+                    showCursor: false,
+                    autofocus: false,
+                    enableInteractiveSelection: false,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.payment),
+                      label: Text('PayMode'),
                     ),
-                    ElevatedButton(
-                      onPressed: () => _save(book, context),
-                      child: const Text('SAVE'),
-                    )
-                  ],
-                ),
+                    controller: _payModeController,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RouteNames.PAYMENT_MODE_SCREEN);
+                    },
+                  );
+                },
               ),
-            )
-          ],
+              const CustomSizedBox(),
+              ElevatedButton(
+                onPressed: () => _save(book, context),
+                child: const Text('SAVE'),
+              ),
+            ],
+          ),
         ),
       ),
     );

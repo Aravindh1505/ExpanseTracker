@@ -5,15 +5,15 @@ import '../theme/typography.dart';
 class CustomTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.green,
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: CustomTypography.fontFamily,
-        appBarTheme: buildAppBarTheme(),
-        floatingActionButtonTheme: buildFloatingActionButtonThemeData(),
-        pageTransitionsTheme:
-            const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder()}),
-        textTheme: CustomTypography.buildTextTheme());
+      useMaterial3: true,
+      primarySwatch: Colors.green,
+      scaffoldBackgroundColor: Colors.white,
+      fontFamily: CustomTypography.fontFamily,
+      appBarTheme: buildAppBarTheme(),
+      floatingActionButtonTheme: buildFloatingActionButtonThemeData(),
+      pageTransitionsTheme:
+          const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder()}),
+    );
   }
 
   /*Custom Theme Builder Methods*/
