@@ -80,7 +80,7 @@ class PayModeProvider with ChangeNotifier, BaseScreen {
       documentId: '',
       payId: id,
       payName: name,
-      type: Constants.DEFAULT,
+      type: Constants.USER,
       sequence: 0,
       isActive: true,
     );
