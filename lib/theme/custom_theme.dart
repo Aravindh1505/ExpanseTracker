@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-        useMaterial3: false,
+        useMaterial3: true,
         primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white,
         fontFamily: GoogleFonts.raleway().fontFamily,
@@ -27,18 +27,26 @@ class CustomTheme {
 
   static TextTheme buildTextTheme() {
     return const TextTheme(
-      /*titleMedium: TextStyle(
+      titleMedium: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.w700,
       ),
-      bodySmall: TextStyle(
+      bodyMedium: TextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w700,
       ),
-      labelSmall: TextStyle(
+      labelLarge: TextStyle(
         fontSize: 12.0,
         fontWeight: FontWeight.w500,
-      ),*/
+      ),
+      labelMedium: TextStyle(
+        fontSize: 12.0,
+        fontWeight: FontWeight.w400,
+      ),
+      labelSmall: TextStyle(
+        fontSize: 12.0,
+        fontWeight: FontWeight.w200,
+      ),
     );
   }
 

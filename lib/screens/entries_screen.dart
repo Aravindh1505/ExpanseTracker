@@ -20,7 +20,6 @@ class EntriesScreen extends StatefulWidget {
 }
 
 class _EntriesScreenState extends State<EntriesScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -40,7 +39,11 @@ class _EntriesScreenState extends State<EntriesScreen> {
 
     Book book = ModalRoute.of(context)?.settings.arguments as Book;
     var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
-    Future<List<Entries>> fetchEntries = entriesProvider.fetchEntries(book);
+    Future<List<Entries>>? fetchEntries;
+
+    if (entriesProvider.list.isEmpty) {
+      entriesProvider.fetchEntries(book);
+    }
 
     return Scaffold(
       appBar: CustomAppBar(context: context, title: book.bookName),

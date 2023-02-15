@@ -27,11 +27,19 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
 
   @override
   void initState() {
-    _booksProvider = Provider.of<BooksProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _booksProvider = Provider.of<BooksProvider>(context, listen: false);
 
-    _booksProvider.getBooks();
-    _booksProvider.getData(context);
+      _booksProvider.getBooks();
+      _booksProvider.getData(context);
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _booksProvider.dispose();
+    super.dispose();
   }
 
   Future<void> _logout(BuildContext context) async {
