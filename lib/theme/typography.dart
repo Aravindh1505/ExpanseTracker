@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTypography {
-  static final fontFamily = GoogleFonts.raleway().fontFamily;
+  static final fontFamily = GoogleFonts.lato().fontFamily;
 
   static TextTheme buildTextTheme() {
     return TextTheme(

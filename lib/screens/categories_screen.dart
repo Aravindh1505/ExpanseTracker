@@ -61,7 +61,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> with BaseScreen {
               const ParagraphText('Your added Categories'),
               const CustomSizedBox(),
               SizedBox(
-                height: 250,
+                height: 300,
                 width: double.infinity,
                 child: Consumer<CategoriesProvider>(
                   builder: (ctx, categories, child) => ListView.builder(

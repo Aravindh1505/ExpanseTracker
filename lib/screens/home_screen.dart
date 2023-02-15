@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
   void _addBook() async {
     String bookName = _bookController.text.toString();
     _booksProvider.addBook(bookName);
+    _bookController.text = '';
     Navigator.of(context).pop();
   }
 

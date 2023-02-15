@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/constants.dart';
 import '../widgets/custom_widgets.dart';
 import '../utils/route_names.dart';
+import 'base_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,19 +12,22 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with BaseScreen {
   late TextEditingController _controller;
 
   void _submit() {
     String mobileNumber = _controller.text.toString();
-    print('MobileNumber $mobileNumber');
+    if (mobileNumber.length != 10) {
+      showToast('Please enter valid mobile number');
+      return;
+    }
 
     Navigator.of(context).pushNamed(RouteNames.OTP_VERIFICATION_SCREEN, arguments: mobileNumber);
   }
 
   @override
   void initState() {
-    _controller = TextEditingController(text: '9791779068');
+    _controller = TextEditingController();
     super.initState();
   }
 
