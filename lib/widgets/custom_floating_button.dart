@@ -20,7 +20,7 @@ class CustomFloatingButton extends StatelessWidget {
     return FloatingActionButton.extended(
       onPressed: () => customBottomSheet(bottomSheet),
       icon: Icon(icon),
-      label: Text(label),
+      label: TitleText(label),
     );
   }
 }

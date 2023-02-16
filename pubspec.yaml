@@ -32,7 +32,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/compass.png
     - assets/images/expense.png
     - assets/images/smartphone.png
 

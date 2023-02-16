@@ -20,6 +20,16 @@ https://www.youtube.com/watch?v=PEUUYOQ2Ixo&t=143s
 
 https://github.com/Amanullahgit/flutter_phone_authentication
 
+# What’s Next
+1. Light and Dark Theme
+2. Adaptive UI Design (To support platform independent component)
+3. MediaQuery (To adjust the components based on device screen)
+4. Test case creation
+5. Implement user defined auto reminder
+6. Optimise the read/write queries to avoid unnecessary service calls
+7. To collect user feedback
+
+
 # Resources
 Installation: https://docs.flutter.dev/get-started/install
 
@@ -28,3 +38,4 @@ CodeLabs: https://docs.flutter.dev/codelabs
 Packages/Libraries: https://pub.dev
 
 Youtube: https://www.youtube.com/@flutterdev/videos
+

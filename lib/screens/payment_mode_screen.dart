@@ -61,36 +61,43 @@ class _PaymentModeScreenState extends State<PaymentModeScreen> with BaseScreen {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ParagraphText('Your added PayModes'),
-            const CustomSizedBox(),
             Consumer<PayModeProvider>(
-              builder: (ctx, paymode, child) => ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (ctx, index) {
-                  return Card(
-                    elevation: 2.0,
-                    margin: const EdgeInsets.all(5.0),
-                    child: RadioButton(
-                      description: paymode.userPayModeList[index].payName,
-                      value: paymode.userPayModeList[index].payName,
-                      groupValue: _selectedPayMode,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedPayMode = value!;
-                          _payModeProvider.userSelectedPayMode(value);
-                          pop(context);
-                        });
-                      },
+              builder: (ctx, paymode, child) => paymode.userPayModeList.isEmpty
+                  ? Container()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const ParagraphText('Your added PayModes'),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (ctx, index) {
+                            return Card(
+                              elevation: 2.0,
+                              margin: const EdgeInsets.all(5.0),
+                              child: RadioButton(
+                                description: paymode.userPayModeList[index].payName,
+                                value: paymode.userPayModeList[index].payName,
+                                groupValue: _selectedPayMode,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedPayMode = value!;
+                                    _payModeProvider.userSelectedPayMode(value);
+                                    pop(context);
+                                  });
+                                },
+                              ),
+                            );
+                          },
+                          itemCount: paymode.userPayModeList.length,
+                        ),
+                      ],
                     ),
-                  );
-                },
-                itemCount: paymode.userPayModeList.length,
-              ),
             ),
             const CustomSizedBox(),
             const ParagraphText('Suggested PayModes'),
             SizedBox(
-              height: 300,
+              height: 400,
               width: double.infinity,
               child: Consumer<PayModeProvider>(
                 builder: (ctx, paymode, child) => ListView.builder(
