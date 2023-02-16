@@ -32,6 +32,14 @@ Add daily expanse entries, create ledgers and know your account balance. Expanse
  </table>
  
  
+# App Flow Chart
+<img src="screenshots/reference/app_design.png" width="1000" height="700"/>
+<img src="screenshots/reference/destination.png" width="1000" height="400"/>
+
+# Firestore Database Design
+<img src="screenshots/reference/database_design.png" width="1000" height="600"/>
+
+ 
 # Third party libraries used,
 1. Google Fonts (https://pub.dev/packages/google_fonts)
 2. Cloud Firestore (https://pub.dev/packages/cloud_firestore)
