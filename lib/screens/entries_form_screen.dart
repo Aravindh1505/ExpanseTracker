@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../model/book.dart';
 import '../model/cash_type.dart';
 import '../provider/entries_provider.dart';
-import '../utils/route_names.dart';
+import '../utils/destination.dart';
 import '../widgets/custom_widgets.dart';
 import 'base_screen.dart';
 
@@ -120,7 +120,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                   ),
                   controller: _categoryController,
                   onTap: () {
-                    Navigator.of(context).pushNamed(RouteNames.CATEGORIES_SCREEN);
+                    Navigator.of(context).pushNamed(Destination.CATEGORIES_SCREEN);
                   },
                 );
               }),
@@ -141,7 +141,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
                     ),
                     controller: _payModeController,
                     onTap: () {
-                      Navigator.of(context).pushNamed(RouteNames.PAYMENT_MODE_SCREEN);
+                      Navigator.of(context).pushNamed(Destination.PAYMENT_MODE_SCREEN);
                     },
                   );
                 },

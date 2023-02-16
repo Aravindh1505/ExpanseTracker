@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/constants.dart';
 import '../widgets/custom_widgets.dart';
-import '../utils/route_names.dart';
+import '../utils/destination.dart';
 import 'base_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> with BaseScreen {
       return;
     }
 
-    Navigator.of(context).pushNamed(RouteNames.OTP_VERIFICATION_SCREEN, arguments: mobileNumber);
+    Navigator.of(context).pushNamed(Destination.OTP_VERIFICATION_SCREEN, arguments: mobileNumber);
   }
 
   @override

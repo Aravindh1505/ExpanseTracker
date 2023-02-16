@@ -16,7 +16,7 @@ import '../screens/otp_verification.dart';
 import '../screens/payment_mode_screen.dart';
 import '../screens/splash_screen.dart';
 import '../theme/custom_theme.dart';
-import '../utils/route_names.dart';
+import '../utils/destination.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,14 +41,15 @@ class MyApp extends StatelessWidget with BaseScreen {
       child: MaterialApp(
         theme: CustomTheme.lightTheme,
         routes: {
-          RouteNames.HOME: (_) => currentUserId == null ? const LoginScreen() : const HomeScreen(),
-          RouteNames.LOGIN_SCREEN: (_) => const LoginScreen(),
-          RouteNames.OTP_VERIFICATION_SCREEN: (_) => OtpVerificationScreen(),
-          RouteNames.ENTRIES_SCREEN: (_) => const EntriesScreen(),
-          RouteNames.ENTRIES_FORM_SCREEN: (_) => const EntriesFormScreen(),
-          RouteNames.CATEGORIES_SCREEN: (_) => const CategoriesScreen(),
-          RouteNames.PAYMENT_MODE_SCREEN: (_) => PaymentModeScreen(),
+          Destination.HOME: (_) => currentUserId == null ? const LoginScreen() : const HomeScreen(),
+          Destination.LOGIN_SCREEN: (_) => const LoginScreen(),
+          Destination.OTP_VERIFICATION_SCREEN: (_) => OtpVerificationScreen(),
+          Destination.ENTRIES_SCREEN: (_) => const EntriesScreen(),
+          Destination.ENTRIES_FORM_SCREEN: (_) => const EntriesFormScreen(),
+          Destination.CATEGORIES_SCREEN: (_) => const CategoriesScreen(),
+          Destination.PAYMENT_MODE_SCREEN: (_) => PaymentModeScreen(),
         },
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

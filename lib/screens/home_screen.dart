@@ -7,7 +7,7 @@ import '../model/bottom_sheet.dart';
 import '../provider/books_provider.dart';
 import '../screens/base_screen.dart';
 import '../utils/constants.dart';
-import '../utils/route_names.dart';
+import '../utils/destination.dart';
 import '../widgets/book_item.dart';
 import '../widgets/custom_floating_button.dart';
 import '../widgets/custom_widgets.dart';
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
   }
 
   void _navigateToEntriesScreen(Book book) {
-    Navigator.of(context).pushNamed(RouteNames.ENTRIES_SCREEN, arguments: book);
+    Navigator.of(context).pushNamed(Destination.ENTRIES_SCREEN, arguments: book);
   }
 
   void _deleteBook(int index) async {

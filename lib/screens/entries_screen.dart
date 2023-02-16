@@ -5,7 +5,7 @@ import '../model/book.dart';
 import '../model/cash_type.dart';
 import '../model/entries.dart';
 import '../provider/entries_provider.dart';
-import '../utils/route_names.dart';
+import '../utils/destination.dart';
 import '../utils/utils.dart';
 import '../widgets/custom_progress.dart';
 import '../widgets/custom_widgets.dart';
@@ -34,7 +34,7 @@ class _EntriesScreenState extends State<EntriesScreen> {
 
   void cashInAndOut(BuildContext context, CashType type, Book book) {
     book.type = type;
-    Navigator.of(context).pushNamed(RouteNames.ENTRIES_FORM_SCREEN, arguments: book).then((value) {
+    Navigator.of(context).pushNamed(Destination.ENTRIES_FORM_SCREEN, arguments: book).then((value) {
       Utils.logger(value);
       if (value != null && value == true) {}
     });

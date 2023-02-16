@@ -1,4 +1,4 @@
-class RouteNames {
+class Destination {
   static const String HOME = '/';
 
   static const String LOGIN_SCREEN = 'login-screen';

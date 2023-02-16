@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-import '../utils/route_names.dart';
+import '../utils/destination.dart';
 import '../widgets/custom_widgets.dart';
 import '../screens/home_screen.dart';
 
