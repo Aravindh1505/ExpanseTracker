@@ -1,15 +1,16 @@
-import 'package:expanse_tracker/provider/categories_provider.dart';
-import 'package:expanse_tracker/provider/paymode_provider.dart';
-import 'package:expanse_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'base_screen.dart';
 import '../model/book.dart';
 import '../model/cash_type.dart';
-import '../provider/entries_provider.dart';
-import '../utils/destination.dart';
 import '../widgets/custom_widgets.dart';
-import 'base_screen.dart';
+import '../provider/categories_provider.dart';
+import '../provider/paymode_provider.dart';
+import '../provider/entries_provider.dart';
+import '../utils/utils.dart';
+import '../utils/destination.dart';
 
 class EntriesFormScreen extends StatefulWidget {
   const EntriesFormScreen({Key? key}) : super(key: key);
@@ -23,6 +24,9 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
   late TextEditingController _remarkController;
   late TextEditingController _categoryController;
   late TextEditingController _payModeController;
+  late TextEditingController _dateController;
+
+  var _selectedDate = '';
 
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     _remarkController = TextEditingController();
     _categoryController = TextEditingController();
     _payModeController = TextEditingController();
+    _dateController = TextEditingController();
 
     CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
     PayModeProvider payModeProvider = Provider.of<PayModeProvider>(context, listen: false);
@@ -46,6 +51,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     _remarkController.dispose();
     _categoryController.dispose();
     _payModeController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
@@ -66,8 +72,22 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
     }
 
     var entriesProvider = Provider.of<EntriesProvider>(context, listen: false);
-    entriesProvider.save(book, amount, remark, category, payMode, '');
+    entriesProvider.save(book, amount, remark, category, payMode, _selectedDate);
     Navigator.of(context).pop();
+  }
+
+  void _datePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022, 1),
+      lastDate: DateTime.now(),
+    ).then((selectedDate) {
+      _selectedDate = selectedDate.toString();
+      var date = getFormattedDate(selectedDate.toString());
+      Utils.logger('selectedDate $date');
+      _dateController.text = date.toString();
+    });
   }
 
   @override
@@ -83,6 +103,21 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
           child: Column(
             children: [
               const CustomSizedBox(),
+              TextField(
+                enabled: true,
+                readOnly: true,
+                showCursor: false,
+                autofocus: false,
+                enableInteractiveSelection: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.payment),
+                  label: Text('Choose Date'),
+                ),
+                controller: _dateController,
+                onTap: _datePicker,
+              ),
+              const CustomSizedBox(height: 35),
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),

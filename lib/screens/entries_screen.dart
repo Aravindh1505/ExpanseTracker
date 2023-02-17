@@ -58,7 +58,7 @@ class _EntriesScreenState extends State<EntriesScreen> {
                 buildTopSection('Total out (-)', entries.expense?.cashOut.toString()),
                 buildTopSection('Net Balance', entries.expense?.total.toString()),
                 SizedBox(
-                  height: 470,
+                  height: 450,
                   width: double.infinity,
                   child: entries.isLoading ? const CustomProgress() : EntriesItem(entries.list),
                 ),

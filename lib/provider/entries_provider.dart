@@ -1,5 +1,5 @@
-import 'package:expanse_tracker/model/cash_type.dart';
-import 'package:expanse_tracker/model/expense.dart';
+import '../model/cash_type.dart';
+import '../model/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,7 +17,7 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
   //UnmodifiableListView<Entries> get list => UnmodifiableListView(_entriesList);
 
   List<Entries> get list {
-    return [..._entriesList];
+    return [..._entriesList.reversed];
   }
 
   bool get isLoading => _isLoading;
@@ -56,6 +56,7 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
     _isLoading = false;
     Utils.logger('entries length : ${_entriesList.length}');
 
+    _compareList();
     processExpense();
     notifyListeners();
     return _entriesList;
@@ -74,7 +75,7 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
       'remark': remark,
       'category': category,
       'paymentMode': payMode,
-      'date': date,
+      'date': selectedDate,
       'platform': getPlatform(),
       'createdAt': date,
     };
@@ -94,13 +95,23 @@ class EntriesProvider with ChangeNotifier, BaseScreen {
       remark: remark,
       category: category,
       paymentMode: payMode,
-      date: date,
+      date: selectedDate,
       createdAt: date,
     );
+    //_entriesList[0] = entries;
     _entriesList.add(entries);
+
+    _compareList();
     processExpense();
-    //fetchEntries(book);
     notifyListeners();
+  }
+
+  void _compareList() {
+    _entriesList.sort((a, b) {
+      int aDate = DateTime.parse(a.date ?? '').microsecondsSinceEpoch;
+      int bDate = DateTime.parse(b.date ?? '').microsecondsSinceEpoch;
+      return aDate.compareTo(bDate);
+    });
   }
 
   void processExpense() {
