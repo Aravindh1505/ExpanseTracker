@@ -11,10 +11,10 @@ Add daily expanse entries, create ledgers and know your account balance. Expanse
      <td>Entries Screen</td>
   </tr>
   <tr>
-  <td><img src="screenshots/android/login.png" width="200" height="450"/></td>
-  <td><img src="screenshots/android/otp_verification.png" width="200" height="450"/></td>
-  <td><img src="screenshots/android/home.png" width="200" height="450"/></td>
-  <td><img src="screenshots/android/entries.png" width="200" height="450"/> </td>
+  <td><img src="screenshots/android/login.png" width="200" height="400"/></td>
+  <td><img src="screenshots/android/otp_verification.png" width="200" height="400"/></td>
+  <td><img src="screenshots/android/home.png" width="200" height="400"/></td>
+  <td><img src="screenshots/android/entries.png" width="200" height="400"/> </td>
   </tr>
  </table>
  
@@ -22,12 +22,12 @@ Add daily expanse entries, create ledgers and know your account balance. Expanse
   <tr>
      <td>Entries Form Screen</td>
      <td>Category Screen</td>
-     <td>Paymode Screen</td>
+     <td>Payment Mode Screen</td>
   </tr>
   <tr>
-  <td><img src="screenshots/android/entries_form.png" width="200" height="450"/>  </td>
-  <td><img src="screenshots/android/category.png" width="200" height="450"/></td>
-  <td><img src="screenshots/android/paymode.png" width="200" height="450"/></td>
+  <td><img src="screenshots/android/entries_form.png" width="200" height="400"/>  </td>
+  <td><img src="screenshots/android/category.png" width="200" height="400"/></td>
+  <td><img src="screenshots/android/paymode.png" width="200" height="400"/></td>
   </tr>
  </table>
  
