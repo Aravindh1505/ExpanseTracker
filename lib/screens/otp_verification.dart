@@ -21,7 +21,10 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
   final defaultPinTheme = PinTheme(
     width: 56,
     height: 56,
-    textStyle: const TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
+    textStyle: const TextStyle(
+        fontSize: 20,
+        color: Color.fromRGBO(30, 60, 87, 1),
+        fontWeight: FontWeight.w600),
     decoration: BoxDecoration(
       border: Border.all(color: Colors.black),
       borderRadius: BorderRadius.circular(20),
@@ -34,7 +37,8 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
 
       if (otp.length == 6) {
         await FirebaseAuth.instance
-            .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode!, smsCode: otp))
+            .signInWithCredential(PhoneAuthProvider.credential(
+                verificationId: _verificationCode!, smsCode: otp))
             .then((value) async {
           if (value.user != null) {
             print(value.user?.uid);
@@ -44,7 +48,8 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -138,7 +143,8 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
   void initState() {
     final widgetsBinding = WidgetsBinding.instance;
     widgetsBinding.addPostFrameCallback((callback) {
-      String? mobileNumber = ModalRoute.of(context)?.settings.arguments as String?;
+      String? mobileNumber =
+          ModalRoute.of(context)?.settings.arguments as String?;
       if (mobileNumber != null) {
         widget.phone = mobileNumber;
         _verifyPhone();
