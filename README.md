@@ -1,6 +1,10 @@
 # Expanse Tracker
 
-Add daily expanse entries, create ledgers and know your account balance. Expanse Tracker is simple cash management and bookkeeping app for all kind of business.
+Expanse Tracker is simple cash management and book keeping app for all kind of business.
+
+# Reference
+- [CashBook](https://play.google.com/store/apps/details?id=com.cashbooknew)
+
 
 # Screenshots
 <table>
@@ -40,7 +44,7 @@ Add daily expanse entries, create ledgers and know your account balance. Expanse
 <img src="screenshots/reference/database_design.png" width="1000" height="600"/>
 
  
-# Third party libraries used,
+# Third party libraries used
 1. Google Fonts (https://pub.dev/packages/google_fonts)
 2. Cloud Firestore (https://pub.dev/packages/cloud_firestore)
 3. Firebase Core (https://pub.dev/packages/firebase_core)
@@ -65,7 +69,7 @@ https://github.com/Amanullahgit/flutter_phone_authentication
 2. Error Handling
 3. Adaptive UI Design (To support platform independent component)
 4. MediaQuery (To adjust the components based on device screen)
-5. Test case creation
+5. Data encryption/decryption
 6. Implement user defined auto reminder
 7. Optimise the read/write queries to avoid unnecessary service calls
 8. To collect user feedback
