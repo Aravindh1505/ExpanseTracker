@@ -130,6 +130,7 @@ class _EntriesFormScreenState extends State<EntriesFormScreen> with BaseScreen {
               ),
               const CustomSizedBox(),
               TextField(
+                textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.note_alt),

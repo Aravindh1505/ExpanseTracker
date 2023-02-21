@@ -135,6 +135,7 @@ void customBottomSheet(BottomSheetValues bottomSheet) {
                 children: [
                   const CustomSizedBox(),
                   TextField(
+                    textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       prefixIcon: const Icon(Icons.book),

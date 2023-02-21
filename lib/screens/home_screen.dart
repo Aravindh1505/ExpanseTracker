@@ -8,6 +8,7 @@ import '../provider/books_provider.dart';
 import '../screens/base_screen.dart';
 import '../utils/constants.dart';
 import '../utils/destination.dart';
+import '../utils/firestore_constants.dart';
 import '../widgets/book_item.dart';
 import '../widgets/custom_floating_button.dart';
 import '../widgets/custom_widgets.dart';
@@ -38,13 +39,13 @@ class _HomeScreenState extends State<HomeScreen> with BaseScreen {
 
   @override
   void dispose() {
-    _booksProvider.dispose();
     super.dispose();
   }
 
   Future<void> _logout(BuildContext context) async {
-    FirebaseAuth.instance.signOut();
-    pushAndRemove(context, const LoginScreen());
+    await FirebaseAuth.instance
+        .signOut()
+        .then((value) => pushAndRemove(context, const LoginScreen()));
   }
 
   void _addBook() async {
