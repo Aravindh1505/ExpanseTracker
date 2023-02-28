@@ -1,3 +1,4 @@
+import 'package:expanse_tracker/provider/notification_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
@@ -5,6 +6,7 @@ import 'package:pinput/pinput.dart';
 import '../utils/destination.dart';
 import '../widgets/custom_widgets.dart';
 import '../screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   String? phone;
@@ -38,6 +40,7 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
             .then((value) async {
           if (value.user != null) {
             print(value.user?.uid);
+            registerPeriodicNotification();
             navigateToHome();
           }
         });
@@ -46,6 +49,11 @@ class _OTPScreenState extends State<OtpVerificationScreen> {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
     }
+  }
+
+  void registerPeriodicNotification() {
+    var notificationProvider = Provider.of<NotificationProvider>(context, listen: false);
+    notificationProvider.registerPeriodicNotification();
   }
 
   void navigateToHome() {

@@ -17,12 +17,17 @@ import '../screens/payment_mode_screen.dart';
 import '../screens/splash_screen.dart';
 import '../theme/custom_theme.dart';
 import '../utils/destination.dart';
+import '../utils/local_notice_service.dart';
+import '../provider/notification_provider.dart';
+
+late final NotificationService notificationService;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  notificationService = NotificationService();
+  await notificationService.initializePlatformNotifications();
   await Firebase.initializeApp();
   Provider.debugCheckInvalidValueType = null;
-
   runApp(MyApp());
 }
 
@@ -37,6 +42,7 @@ class MyApp extends StatelessWidget with BaseScreen {
         ChangeNotifierProvider<CategoriesProvider>(create: (_) => CategoriesProvider()),
         ChangeNotifierProvider<PayModeProvider>(create: (_) => PayModeProvider()),
         ChangeNotifierProvider<BooksProvider>(create: (_) => BooksProvider()),
+        ChangeNotifierProvider<NotificationProvider>(create: (_) => NotificationProvider()),
       ],
       child: MaterialApp(
         theme: CustomTheme.lightTheme,
